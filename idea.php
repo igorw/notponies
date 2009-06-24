@@ -12,6 +12,11 @@ class idea
 
 	private $votes;
 
+	/**
+	* @todo use private and getter
+	*/
+	public $user_id;
+
 	public function __construct(array $data)
 	{
 		$this->id			= (int) $data['idea_id'];
@@ -68,6 +73,8 @@ class idea
 
 	public function get_vote()
 	{
+		global $user;
+
 		return $this->voted() ? $this->votes[$user->data['user_id']] : null;
 	}
 
