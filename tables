@@ -1,0 +1,20 @@
+ideas
+	id				PK
+	user_id			IDX
+	title					Some summary title
+	description				Text describing the idea
+	vote_cost				Cost per vote
+	vote_closed				Is voting closed?
+	rejected				Is the idea rejected? Useful to keep ideas rejected by the moderators for people to see
+
+votes
+	id				PK
+	idea_id			(UNIQ
+	user_id			UNIQ)
+	count					Number of votes made
+	negate					Negative vote?
+	cost					Cost of the vote (count * (negate ? -1 : 1) * ideas.vote_cost)
+
+voters
+	id				PK
+	base_points				How many points has the user got to start with
