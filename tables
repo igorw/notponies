@@ -1,6 +1,7 @@
 ideas
 	id				PK
 	user_id			IDX
+	topic_id		IDX		Discussion topic in the forum
 	title					Some summary title
 	description				Text describing the idea
 	vote_cost				Cost per vote
