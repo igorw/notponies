@@ -11,6 +11,6 @@ class ideas
 			return;
 		}
 
-		require IDEAS_ROOT_PATH . 'includes/classes/' . $class . '.php';
+		require NP_ROOT_PATH . 'includes/classes/' . $class . '.php';
 	}
 }
