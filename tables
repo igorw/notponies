@@ -15,6 +15,8 @@ votes
 	count					Number of votes made
 	negate					Negative vote?
 	cost					Cost of the vote (count * (negate ? -1 : 1) * ideas.vote_cost)
+	ctime					Creation time
+	mtime					Modification time
 
 voters
 	id				PK
