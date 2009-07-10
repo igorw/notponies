@@ -28,6 +28,8 @@ class vote
 
 	public function __construct(array $data)
 	{
+		np_registry::get_instance()->register($this);
+
 		$this->id		= (int) $data['id'];
 		$this->idea_id	= (int) $data['idea_id'];
 		$this->user_id	= (int) $data['user_id'];
@@ -162,7 +164,14 @@ class vote
 
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$votes[(int) $row['user_id']] = new self($row);
+			if (($object = np_registry::get_instance()->get(__CLASS__, $row['id'])) === null)
+			{
+				$votes[(int) $row['user_id']] = new self($row);
+			}
+			else
+			{
+				$votes[(int) $row['user_id']] = $object;
+			}			
 		}
 		$db->sql_freeresult($result);
 

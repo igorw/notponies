@@ -23,10 +23,10 @@ class idea
 
 	const TABLE = NP_IDEAS_TABLE;
 
-	private static $instances;
-
 	public function __construct(array $data)
 	{
+		np_registry::get_instance()->register($this);
+
 		$this->id			= (int) $data['id'];
 		$this->title		= $data['title'];
 		$this->description	= $data['description'];
@@ -37,22 +37,20 @@ class idea
 
 	public static function &get($id)
 	{
-		if (!isset(self::$instances[$id]) || self::$instances[$id] === null)
-		{
-			global $db;
+		global $db;
 
-			$sql = 'SELECT *
-				FROM ' . self::TABLE . '
-				WHERE id = ' . (int) $id;
+		$sql = 'SELECT *
+			FROM ' . self::TABLE . '
+			WHERE id = ' . (int) $id;
 
-			$result = $db->sql_query($sql);
+		$result = $db->sql_query($sql);
 
-			$row = $db->sql_fetchrow($result);
-			$db->sql_freeresult($result);
+		$row = $db->sql_fetchrow($result);
+		$db->sql_freeresult($result);
 
-			self::$instances[$id] = ($row) ? new self($row) : null;
-		}
-		return self::$instances[$id];
+		$return = ($row) ? new self($row) : null;
+
+		return $return;
 	}
 
 	public static function create($title, $description, voter $voter)

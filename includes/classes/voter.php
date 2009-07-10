@@ -15,6 +15,8 @@ class voter
 
 	private function __construct(array $data)
 	{
+		np_registry::get_instance()->register($this);
+
 		$this->id			= (int) $data['id'];
 		$this->name			= $data['name'];
 		$this->base_points	= (int) $data['base_points'];
