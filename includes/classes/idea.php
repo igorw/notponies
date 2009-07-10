@@ -42,6 +42,11 @@ class idea extends np_record
 		$this->mtime		= (int) $data['mtime'];
 	}
 
+	public function __get($var)
+	{
+		return isset($this->$var) ? $this->$var : null;
+	}
+
 	public static function get($id)
 	{
 		global $db;
