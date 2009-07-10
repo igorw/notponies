@@ -33,6 +33,8 @@ class voter extends np_record
 
 	public static function get($id)
 	{
+		global $db;
+
 		$sql = 'SELECT v.*, u.user_id, u.username AS name
 			FROM ' . USERS_TABLE . ' u
 			LEFT JOIN ' . self::TABLE . ' v ON (v.id = u.user_id)
