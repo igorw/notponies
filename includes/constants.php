@@ -2,7 +2,7 @@
 
 if (!defined('NP_TABLE_PREFIX'))
 {
-	define('NP_TABLE_PREFIX', $table_prefix . 'ideas_');
+	define('NP_TABLE_PREFIX', $table_prefix . 'np_');
 }
 
 define('NP_IDEAS_TABLE', NP_TABLE_PREFIX . 'ideas');
