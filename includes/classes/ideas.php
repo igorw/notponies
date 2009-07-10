@@ -4,6 +4,8 @@
 
 class ideas
 {
+	const AUTOLOADER = 'ideas::autoload';
+
 	public static function autoload($class)
 	{
 		if (!preg_match('#^[a-z][a-z0-9_]+$#', $class))
