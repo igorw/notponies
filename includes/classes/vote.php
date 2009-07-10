@@ -8,6 +8,8 @@ class vote
 
 	private $user_id;
 
+	private $count;
+
 	private $value;
 
 	private $cost;
@@ -26,13 +28,14 @@ class vote
 
 	public function __construct(array $data)
 	{
-		$this->id		= (int) $data['vote_id'];
+		$this->id		= (int) $data['id'];
 		$this->idea_id	= (int) $data['idea_id'];
 		$this->user_id	= (int) $data['user_id'];
-		$this->value	= (int) $data['vote_value'];
-		$this->cost		= (int) $data['vote_cost'];
-		$this->ctime	= (int) $data['vote_ctime'];
-		$this->mtime	= (int) $data['vote_mtime'];
+		$this->count	= (int) $data['count'];
+		$this->value	= (int) $data['value'];
+		$this->cost		= (int) $data['cost'];
+		$this->ctime	= (int) $data['ctime'];
+		$this->mtime	= (int) $data['mtime'];
 	}
 
 	public function changeable()
@@ -63,14 +66,14 @@ class vote
 		global $db;
 
 		$sql = 'DELETE
-			FROM ' . STABLES_VOTES_TABLE . '
-			WHERE vote_id = ' . $this->id;
+			FROM ' . self::TABLE . '
+			WHERE id = ' . $this->id;
 		$db->sql_query($sql);
 
-		$this->value = self::DELETED;
+		$this->value	= self::DELETED;
 	}
 
-	public static function add(idea $idea, $negate)
+	public static function add(idea $idea, $count, $negate)
 	{
 		global $db, $user;
 
@@ -89,14 +92,21 @@ class vote
 		$sql_ary = array(
 			'idea_id'		=> (int) $this->id,
 			'user_id'		=> (int) $user->data['user_id'],
-			'vote_value'	=> (int) ($negate ? vote::NO : vote::YES),
-			'vote_ctime'	=> (int) $time,
-			'vote_mtime'	=> (int) $time,
+			'count'			=> (int) $count,
+			'value'			=> (int) ($negate ? vote::NO : vote::YES),
+			'ctime'			=> (int) $time,
+			'mtime'			=> (int) $time,
 		);
+		$sql_ary['cost'] = self::calculate_cost($sql_ary['count'], $sql_ary['value'], $idea->vote_cost);
 
 		$sql = 'INSERT INTO ' . STABLES_VOTES_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 
 		return $db->sql_query($sql);
+	}
+
+	public static function calculate_cost($count, $value, $vote_cost)
+	{
+		return $count * $value * $vote_cost;
 	}
 
 	public static function find_by_idea(idea $idea)
@@ -104,7 +114,7 @@ class vote
 		global $db;
 
 		$sql = 'SELECT *
-			FROM ' . STABLES_VOTES_TABLE . '
+			FROM ' . self::TABLE . '
 			WHERE idea_id = ' . $idea->id;
 
 		$result = $db->sql_query($sql);

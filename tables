@@ -13,8 +13,8 @@ votes
 	idea_id			(UNIQ
 	user_id			UNIQ)
 	count					Number of votes made
-	negate					Negative vote?
-	cost					Cost of the vote (count * (negate ? -1 : 1) * ideas.vote_cost)
+	value					1 := +ve, -1 := -ve, 0 := deleted
+	cost					Cost of the vote (count * value * ideas.vote_cost)
 	ctime					Creation time
 	mtime					Modification time
 
