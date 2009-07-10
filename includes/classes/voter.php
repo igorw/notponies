@@ -24,6 +24,13 @@ class voter extends np_record
 		$this->points = null;
 	}
 
+	public static function get_current()
+	{
+		global $user;
+
+		return self::get((int) $user->data['user_id']);
+	}
+
 	public static function get($id)
 	{
 		$sql = 'SELECT v.*, u.user_id, u.username AS name
