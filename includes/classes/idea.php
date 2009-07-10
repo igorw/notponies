@@ -12,6 +12,10 @@ class idea extends np_record
 
 	private $votes;
 
+	private $ctime;
+
+	private $mtime;
+
 	/**
 	* @todo use private and getter
 	*/
@@ -20,6 +24,9 @@ class idea extends np_record
 	const DEFAULT_COST = 5;
 
 	const TABLE = NP_IDEAS_TABLE;
+
+	const POPULAR = 1;
+	const NEWEST = 2;
 
 	public function __construct(array $data)
 	{
@@ -31,6 +38,8 @@ class idea extends np_record
 		$this->cost			= (int) $data['cost'];
 		$this->vote_cost	= (int) $data['vote_cost'];
 		$this->votes		= vote::find_by_idea($this);
+		$this->ctime		= (int) $data['ctime'];
+		$this->mtime		= (int) $data['mtime'];
 	}
 
 	public static function get($id)
@@ -47,6 +56,42 @@ class idea extends np_record
 		$db->sql_freeresult($result);
 
 		return ($row) ? new self($row) : null;
+	}
+
+	public static function find($criteria, $limit)
+	{
+		global $db;
+
+		switch ($criteria)
+		{
+			case self::POPULAR:
+
+			break;
+
+			case self::NEWEST:
+			default:
+				
+			break;
+		}
+
+		$sql_order_by = 'ORDER BY ctime DESC';
+
+		$sql = 'SELECT *
+			FROM ' . self::TABLE . "
+			$sql_where
+			$sql_order_by";
+
+		$result = ($limit > 0) ? $db->sql_query_limit($sql, $limit) : $db->sql_query($sql);
+
+		$results = array();
+
+		while ($row = $db->sql_fetchrow($result))
+		{
+			$results[] = new self($row);
+		}
+		$db->sql_freeresult($result);
+
+		return $results;
 	}
 
 	public static function create($title, $description, voter $voter)
