@@ -19,7 +19,7 @@ class idea extends np_record
 	/**
 	* @todo use private and getter
 	*/
-	public $user_id;
+	private $user;
 
 	const DEFAULT_COST = 5;
 
@@ -40,6 +40,7 @@ class idea extends np_record
 		$this->votes		= vote::find_by_idea($this);
 		$this->ctime		= (int) $data['ctime'];
 		$this->mtime		= (int) $data['mtime'];
+		$this->user			= voter::get($data['user_id']);
 	}
 
 	public function __get($var)
