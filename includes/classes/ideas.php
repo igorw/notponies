@@ -11,6 +11,11 @@ class ideas
 			return;
 		}
 
+		if (strpos($class, 'np_') === 0)
+		{
+			$class = substr($class, 3);
+		}
+
 		require NP_ROOT_PATH . '/includes/classes/' . $class . '.php';
 	}
 }
