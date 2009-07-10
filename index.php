@@ -14,17 +14,18 @@ if (!file_exists(NP_ROOT_PATH . '/config.php'))
 	exit;
 }
 
-// Bootstrap
-require NP_ROOT_PATH . '/config.php';
-require NP_ROOT_PATH . '/includes/constants.php';
-require NP_ROOT_PATH . '/includes/classes/ideas.php';
-
+// Bootstrap phpBB
 define('IN_PHPBB', true);
 
 $phpbb_root_path = (!isset($phpbb_root_path)) ? './../' : $phpbb_root_path;
 $phpEx = (!isset($phpEx)) ? 'php' : $phpEx;
 
 require $phpbb_root_path . 'common.' . $phpEx;
+
+// Bootstrap !ponies
+require NP_ROOT_PATH . '/config.php';
+require NP_ROOT_PATH . '/includes/constants.php';
+require NP_ROOT_PATH . '/includes/classes/ideas.php';
 
 $user->session_begin();
 $auth->acl($user->data);
