@@ -22,7 +22,7 @@ require NP_ROOT_PATH . '/includes/bootstrap.php';
 // Ensure the user viewing the page is recorded in the DB
 voter::get_current();
 
-foreach (idea::find(idea::POPULAR) as $idea)
+foreach (idea::find(idea::POPULAR, 25) as $idea)
 {
 	$template->assign_block_vars('ideas', array(
 		'ID'		=> $idea->id,
