@@ -19,7 +19,7 @@ class np_registry
 		return self::$instance;
 	}
 
-	public function register(&$object)
+	public function register(np_record &$object)
 	{
 		$type = get_class($object);
 
@@ -27,7 +27,7 @@ class np_registry
 		{
 			$this->objects[$type] = array();
 		}
-		$this->objects[$type][$object->id] =& $object;
+		$this->objects[$type][$object->get_id()] =& $object;
 	}
 
 	public function &get($type, $id)
@@ -43,8 +43,8 @@ class np_registry
 		return $this->objects[$type][$id];
 	}
 
-	public function remove($object)
+	public function remove(np_record $object)
 	{
-		unset($this->objects[$type][$object->id]);
+		unset($this->objects[$type][$object->get_id()]);
 	}
 }

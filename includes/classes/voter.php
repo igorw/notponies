@@ -1,6 +1,6 @@
 <?php
 
-class voter
+class voter extends np_record
 {
 	private $id;
 	private $name;

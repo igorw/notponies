@@ -1,6 +1,6 @@
 <?php
 
-class vote
+class vote extends np_record
 {
 	private $id;
 

@@ -1,6 +1,6 @@
 <?php
 
-class idea
+class idea extends np_record
 {
 	private $id;
 
