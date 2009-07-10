@@ -25,7 +25,10 @@ voter::get_current();
 foreach (idea::find(idea::POPULAR, 25) as $idea)
 {
 	$template->assign_block_vars('ideas', array(
-		'ID'		=> $idea->id,
+		'ID'			=> $idea->id,
+		'TITLE'			=> $idea->title,
+		'DESCRIPTION'	=> $idea->description,
+		'USERNAME'		=> $idea->user->username('full'),
 	));
 }
 
