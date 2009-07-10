@@ -33,7 +33,7 @@ class idea extends np_record
 		$this->votes		= vote::find_by_idea($this);
 	}
 
-	public static function &get($id)
+	public static function get($id)
 	{
 		global $db;
 
@@ -46,9 +46,7 @@ class idea extends np_record
 		$row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
 
-		$return = ($row) ? new self($row) : null;
-
-		return $return;
+		return ($row) ? new self($row) : null;
 	}
 
 	public static function create($title, $description, voter $voter)
