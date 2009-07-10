@@ -42,6 +42,11 @@ class voter extends np_record
 		$this->points = null;
 	}
 
+	public function username($mode)
+	{
+		return get_username_string($mode, $this->id, $this->name, $this->colour);
+	}
+
 	public function rank()
 	{
 		if (!function_exists('get_user_rank'))
