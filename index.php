@@ -6,17 +6,17 @@
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 */
 
-define('IDEA_ROOT_PATH', dirname(__FILE__));
+define('NP_ROOT_PATH', dirname(__FILE__));
 
-if (!file_exists(IDEA_ROOT_PATH . '/config.php'))
+if (!file_exists(NP_ROOT_PATH . '/config.php'))
 {
 	echo 'Missing config.php.';
 	exit;
 }
 
 // Bootstrap
-require IDEA_ROOT_PATH . '/config.php';
-require IDEA_ROOT_PATH . '/includes/constants.php';
-require IDEA_ROOT_PATH . '/includes/classes/ideas.php';
+require NP_ROOT_PATH . '/config.php';
+require NP_ROOT_PATH . '/includes/constants.php';
+require NP_ROOT_PATH . '/includes/classes/ideas.php';
 
 spl_autoload_register('ideas::autoload');
