@@ -4,6 +4,9 @@ ideas
 	topic_id		IDX		Discussion topic in the forum
 	title					Some summary title
 	description				Text describing the idea
+	description_uid			BBCode UID
+	description_bitfield	BBCode bitfield
+	description_options		BBCode options
 	cost					Cost of proposing the idea
 	vote_cost				Cost per vote
 	vote_closed				Is voting closed?
