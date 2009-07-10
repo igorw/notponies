@@ -38,22 +38,54 @@ class vote
 		$this->mtime	= (int) $data['mtime'];
 	}
 
+	public function __get($var)
+	{
+		if (isset($this->$var))
+		{
+			return $this->$var;
+		}
+		else if ($var == 'idea')
+		{
+			return idea::get($this->idea_id);
+		}
+
+		return null;
+	}
+
 	public function changeable()
 	{
 		return true;
 	}
 
-	public function change($negate)
+	public function change($count, $negate)
 	{
+		if (!$this->changeable())
+		{
+			return false;
+		}
+
 		global $db;
 
 		$this->value = ($negate) ? self::NO : self::YES;
 
-		$sql = 'UPDATE ' . STABLES_VOTES_TABLE . '
-			SET vote_mtime = ' . time() . "
-				vote_value = {$this->value}
-			WHERE vote_id = {$this->id}";
+		$sql_ary = array(
+			'count'			=> (int) $count,
+			'value'			=> (int) ($negate ? vote::NO : vote::YES),
+			'mtime'			=> (int) $time,
+		);
+		$sql_ary['cost'] = self::calculate_cost($sql_ary['count'], $sql_ary['value'], $this->idea->vote_cost);
+
+		$sql = 'UPDATE ' . self::TABLE . '
+			SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
+			WHERE id = ' . $this->id;
 		$db->sql_query($sql);
+
+		$this->count	= $sql_ary['count'];
+		$this->value	= $sql_ary['value'];
+		$this->cost		= $sql_ary['cost'];
+		$this->mtime	= $sql_ary['mtime'];
+
+		return true;
 	}
 
 	public function removable()
@@ -63,6 +95,11 @@ class vote
 
 	public function remove()
 	{
+		if (!$this->remoable())
+		{
+			return false;
+		}
+
 		global $db;
 
 		$sql = 'DELETE
@@ -71,6 +108,8 @@ class vote
 		$db->sql_query($sql);
 
 		$this->value	= self::DELETED;
+
+		return true;
 	}
 
 	public static function add(idea $idea, $count, $negate, voter $voter)
@@ -99,7 +138,7 @@ class vote
 		);
 		$sql_ary['cost'] = self::calculate_cost($sql_ary['count'], $sql_ary['value'], $idea->vote_cost);
 
-		$sql = 'INSERT INTO ' . STABLES_VOTES_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
+		$sql = 'INSERT INTO ' . self::TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 
 		return $db->sql_query($sql);
 	}
