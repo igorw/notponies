@@ -62,6 +62,8 @@ class idea extends np_record
 	{
 		global $db;
 
+		$sql_where = '';
+
 		switch ($criteria)
 		{
 			case self::POPULAR:
