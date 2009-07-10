@@ -4,6 +4,7 @@ ideas
 	topic_id		IDX		Discussion topic in the forum
 	title					Some summary title
 	description				Text describing the idea
+	cost					Cost of proposing the idea
 	vote_cost				Cost per vote
 	vote_closed				Is voting closed?
 	rejected				Is the idea rejected? Useful to keep ideas rejected by the moderators for people to see
