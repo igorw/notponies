@@ -28,9 +28,9 @@ class voter
 	{
 		$sql = 'SELECT v.*, u.user_id, u.username AS name
 			FROM ' . USERS_TABLE . ' u
-			LEFT JOIN ' . self::TABLE . " v ON (v.id = u.user_id)
-			WHERE u.user_id = $id
-				AND u.user_type IN (" . USER_NORMAL . ', ' . USER_FOUNDER . ')';
+			LEFT JOIN ' . self::TABLE . ' v ON (v.id = u.user_id)
+			WHERE u.user_id = ' . (int) $id . '
+				AND u.user_type IN (' . USER_NORMAL . ', ' . USER_FOUNDER . ')';
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
