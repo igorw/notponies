@@ -68,7 +68,7 @@ class voter
 			return null;
 		}
 
-		if ($var == 'points' && $var === null)
+		if ($var == 'points' && $this->$var === null)
 		{
 			$this->points = $this->base_points;
 
