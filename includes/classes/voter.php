@@ -79,7 +79,7 @@ class voter
 				GROUP BY user_id";
 
 			$result = $db->sql_query($sql);
-			$this->points -= (int) $db->sql_fetchfield($result, 'cost');
+			$this->points -= (int) $db->sql_fetchfield('cost', false, $result);
 			$db->sql_freeresult($result);
 
 			$sql = 'SELECT SUM(idea_cost) AS cost
@@ -88,7 +88,7 @@ class voter
 				GROUP BY user_id";
 
 			$result = $db->sql_query($sql);
-			$this->points -= (int) $db->sql_fetchfield($result, 'cost');
+			$this->points -= (int) $db->sql_fetchfield('cost', false, $result);
 			$db->sql_freeresult($result);
 		}
 
