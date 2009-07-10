@@ -26,4 +26,8 @@ $phpEx = (!isset($phpEx)) ? 'php' : $phpEx;
 
 require $phpbb_root_path . 'common.' . $phpEx;
 
+$user->session_begin();
+$auth->acl($user->data);
+$user->setup();
+
 spl_autoload_register('ideas::autoload');
