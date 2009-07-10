@@ -11,14 +11,13 @@ class voter
 
 	const DEFAULT_POINTS = 20;
 
-	const TABLE = STABLES_VOTERS_TABLE;
+	const TABLE = NP_VOTERS_TABLE;
 
 	private function __construct(array $data)
 	{
-		$this->id = (int) $data['id'];
-		$this->name = $data['name'];
-
-		$this->base_points = (int) $data['base_points'];
+		$this->id			= (int) $data['id'];
+		$this->name			= $data['name'];
+		$this->base_points	= (int) $data['base_points'];
 
 		// Calculate on request
 		$this->points = null;

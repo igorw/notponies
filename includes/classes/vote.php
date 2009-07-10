@@ -22,7 +22,7 @@ class vote
 
 	const DEFAULT_COST = 1;
 
-	const TABLE = STABLES_VOTES_TABLE;
+	const TABLE = NP_VOTES_TABLE;
 
 	public function __construct(array $data)
 	{

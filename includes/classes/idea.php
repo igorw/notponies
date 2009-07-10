@@ -17,12 +17,14 @@ class idea
 	*/
 	public $user_id;
 
+	const TABLE = NP_IDEAS_TABLE;
+
 	public function __construct(array $data)
 	{
-		$this->id			= (int) $data['idea_id'];
-		$this->title		= $data['idea_title'];
-		$this->description	= $data['idea_description'];
-		$this->vote_cost	= (int) $data['idea_vote_cost'];
+		$this->id			= (int) $data['id'];
+		$this->title		= $data['title'];
+		$this->description	= $data['description'];
+		$this->vote_cost	= (int) $data['vote_cost'];
 		$this->votes		= vote::find_by_idea($this);
 	}
 
@@ -31,7 +33,7 @@ class idea
 		global $db;
 
 		$sql = 'SELECT *
-			FROM ' . STABLES_IDEAS_TABLE . '
+			FROM ' . self::TABLE . '
 			WHERE idea_id = ' . (int) $id;
 
 		$result = $db->sql_query($sql);
@@ -57,11 +59,14 @@ class idea
 			'idea_title'		=> (string) $title,
 			'idea_description'	=> (string) $description,
 			'idea_version'		=> (string) $version,
+			'idea_vote_cost'	=> vote::DEFAULT_COST,
 			'user_id'			=> (int) $user->data['user_id'],
 		);
-		$sql = 'INSERT INTO ' . STABLES_IDEAS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
+		$sql = 'INSERT INTO ' . self::TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 
 		$db->sql_query($sql);
+
+//		return new self(array(
 	}
 
 	public function voted()
