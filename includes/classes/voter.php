@@ -59,7 +59,7 @@ class voter extends np_record
 				'base_points'	=> (int) self::DEFAULT_POINTS,
 			);
 
-			$sql = 'INSERT INTO ' . self::TABLE . ' ' . $db->sql_build_ary('INSERT', $sql_ary);
+			$sql = 'INSERT INTO ' . self::TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 
 			$db->sql_query($sql);
 
