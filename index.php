@@ -30,15 +30,15 @@ $user->session_begin();
 $auth->acl($user->data);
 $user->setup();
 
+$template->set_custom_template(NP_ROOT_PATH . '/style', 'np');
+$template->assign_var('T_TEMPLATE_PATH', NP_ROOT_PATH . '/style');
+$user->theme['template_storedb'] = false;
+
 spl_autoload_register('ideas::autoload');
 
 // Business logic
 
 spl_autoload_unregister('ideas::autoload');
-
-$template->set_custom_template(NP_ROOT_PATH . '/style', 'np');
-$template->assign_var('T_TEMPLATE_PATH', NP_ROOT_PATH . '/style');
-$user->theme['template_storedb'] = false;
 
 page_header($user->lang['INDEX']);
 
