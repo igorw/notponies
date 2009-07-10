@@ -39,6 +39,9 @@ spl_autoload_register('ideas::autoload');
 
 // Business logic
 
+// Ensure the user viewing the page is recording the DB
+voter::get_current();
+
 spl_autoload_unregister('ideas::autoload');
 
 page_header($user->lang['INDEX']);
