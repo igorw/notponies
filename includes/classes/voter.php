@@ -2,7 +2,6 @@
 
 class voter extends np_record
 {
-	private $id;
 	private $name;
 
 	private $base_points;

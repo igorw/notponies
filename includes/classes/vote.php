@@ -2,8 +2,6 @@
 
 class vote extends np_record
 {
-	private $id;
-
 	private $idea_id;
 
 	private $user_id;

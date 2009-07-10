@@ -2,8 +2,6 @@
 
 class idea extends np_record
 {
-	private $id;
-
 	private $title;
 
 	private $description;
