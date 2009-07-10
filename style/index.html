@@ -1,0 +1,20 @@
+<!-- INCLUDE header.html -->
+
+<ul>
+	<li><a href="">Popular ideas</a></li>
+	<li><a href="">Latest ideas</a></li>
+</ul>
+
+<!-- IF .ideas -->
+	<div>
+	<!-- BEGIN ideas -->
+		<div class="idea">
+			{ideas.ID}
+		</div>
+	<!-- END ideas -->
+	</div>
+<!-- ELSE -->
+	<p>Nothing to report.</p>
+<!-- ENDIF -->
+
+<!-- INCLUDE footer.html -->
