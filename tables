@@ -8,6 +8,8 @@ ideas
 	vote_cost				Cost per vote
 	vote_closed				Is voting closed?
 	rejected				Is the idea rejected? Useful to keep ideas rejected by the moderators for people to see
+	ctime					Creation time
+	mtime					Modification time
 
 votes
 	id				PK
