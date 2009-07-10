@@ -8,6 +8,8 @@ class idea
 
 	private $description;
 
+	private $cost;
+
 	private $vote_cost = vote::DEFAULT_COST;
 
 	private $votes;
@@ -17,6 +19,8 @@ class idea
 	*/
 	public $user_id;
 
+	const DEFAULT_COST = 5;
+
 	const TABLE = NP_IDEAS_TABLE;
 
 	public function __construct(array $data)
@@ -24,6 +28,7 @@ class idea
 		$this->id			= (int) $data['id'];
 		$this->title		= $data['title'];
 		$this->description	= $data['description'];
+		$this->cost			= (int) $data['cost'];
 		$this->vote_cost	= (int) $data['vote_cost'];
 		$this->votes		= vote::find_by_idea($this);
 	}
@@ -34,7 +39,7 @@ class idea
 
 		$sql = 'SELECT *
 			FROM ' . self::TABLE . '
-			WHERE idea_id = ' . (int) $id;
+			WHERE id = ' . (int) $id;
 
 		$result = $db->sql_query($sql);
 
@@ -51,40 +56,41 @@ class idea
 		}
 	}
 
-	public static function create($title, $description, $version)
+	public static function create($title, $description, voter $voter)
 	{
-		global $db, $user;
+		global $db;
 
 		$sql_ary = array(
-			'idea_title'		=> (string) $title,
-			'idea_description'	=> (string) $description,
-			'idea_version'		=> (string) $version,
-			'idea_vote_cost'	=> vote::DEFAULT_COST,
-			'user_id'			=> (int) $user->data['user_id'],
+			'title'				=> (string) $title,
+			'description'		=> (string) $description,
+			'cost'				=> (int) self::DEFAULT_COST,
+			'vote_cost'			=> (int) vote::DEFAULT_COST,
+			'user_id'			=> (int) $voter->id,
 		);
 		$sql = 'INSERT INTO ' . self::TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 
 		$db->sql_query($sql);
 
-//		return new self(array(
+		// Prepend the id
+		$sql_ary = array_merge(array(
+			'id'	=> $db->sql_nextid(),
+		), $sql_ary);
+
+		return new self($sql_ary);
 	}
 
-	public function voted()
+	public function voted(voter $voter)
 	{
-		global $user;
-
-		return isset($this->votes[$user->data['user_id']]) && $this->votes[$user->data['user_id']]->value != vote::DELETED;
+		return isset($this->votes[$voter->id]) && $this->votes[$voter->id]->value != vote::DELETED;
 	}
 
-	public function get_vote()
+	public function get_vote(voter $voter)
 	{
-		global $user;
-
-		return $this->voted() ? $this->votes[$user->data['user_id']] : null;
+		return $this->voted() ? $this->votes[$voter->id] : null;
 	}
 
-	public function vote($negate = false)
+	public function vote(voter $voter, $count, $negate = false)
 	{
-		return vote::add($this, $negate);
+		return vote::add($this, $count, $negate, $voter);
 	}
 }

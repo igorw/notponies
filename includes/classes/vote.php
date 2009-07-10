@@ -73,16 +73,16 @@ class vote
 		$this->value	= self::DELETED;
 	}
 
-	public static function add(idea $idea, $count, $negate)
+	public static function add(idea $idea, $count, $negate, voter $voter)
 	{
-		global $db, $user;
+		global $db;
 
-		if ($idea->user_id == $user->data['user_id'])
+		if ($idea->user_id == $voter->id)
 		{
 			trigger_error('You are unable to vote for your own ideas.');
 		}
 
-		if ($idea->voted())
+		if ($idea->voted($voter->id))
 		{
 			trigger_error('You have already voted.');
 		}
@@ -91,7 +91,7 @@ class vote
 
 		$sql_ary = array(
 			'idea_id'		=> (int) $this->id,
-			'user_id'		=> (int) $user->data['user_id'],
+			'user_id'		=> (int) $voter->id,
 			'count'			=> (int) $count,
 			'value'			=> (int) ($negate ? vote::NO : vote::YES),
 			'ctime'			=> (int) $time,
