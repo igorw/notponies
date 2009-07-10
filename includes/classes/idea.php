@@ -23,6 +23,8 @@ class idea
 
 	const TABLE = NP_IDEAS_TABLE;
 
+	private static $instances;
+
 	public function __construct(array $data)
 	{
 		$this->id			= (int) $data['id'];
@@ -33,27 +35,24 @@ class idea
 		$this->votes		= vote::find_by_idea($this);
 	}
 
-	public static function get($id)
+	public static function &get($id)
 	{
-		global $db;
-
-		$sql = 'SELECT *
-			FROM ' . self::TABLE . '
-			WHERE id = ' . (int) $id;
-
-		$result = $db->sql_query($sql);
-
-		$row = $db->sql_fetchrow($result);
-		$db->sql_freeresult($result);
-
-		if ($row)
+		if (!isset(self::$instances[$id]) || self::$instances[$id] === null)
 		{
-			return new self($row);
+			global $db;
+
+			$sql = 'SELECT *
+				FROM ' . self::TABLE . '
+				WHERE id = ' . (int) $id;
+
+			$result = $db->sql_query($sql);
+
+			$row = $db->sql_fetchrow($result);
+			$db->sql_freeresult($result);
+
+			self::$instances[$id] = ($row) ? new self($row) : null;
 		}
-		else
-		{
-			return null;
-		}
+		return self::$instances[$id];
 	}
 
 	public static function create($title, $description, voter $voter)
