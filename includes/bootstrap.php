@@ -5,6 +5,12 @@ if (!defined('NP_ROOT_PATH'))
 	exit;
 }
 
+if (!file_exists(NP_ROOT_PATH . '/config.php'))
+{
+	echo 'Missing config.php.';
+	exit;
+}
+
 // Bootstrap phpBB
 define('IN_PHPBB', true);
 

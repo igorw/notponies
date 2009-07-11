@@ -8,12 +8,6 @@
 
 define('NP_ROOT_PATH', dirname(__FILE__));
 
-if (!file_exists(NP_ROOT_PATH . '/config.php'))
-{
-	echo 'Missing config.php.';
-	exit;
-}
-
 // Bootstrap
 require NP_ROOT_PATH . '/includes/bootstrap.php';
 
