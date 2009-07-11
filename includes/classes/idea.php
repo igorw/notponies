@@ -45,8 +45,8 @@ class idea extends np_record
 		$this->cost					= (int) $data['cost'];
 		$this->vote_cost			= (int) $data['vote_cost'];
 		$this->votes				= vote::find_by_idea($this);
-		$this->ctime				= (int) $data['ctime'];
-		$this->mtime				= (int) $data['mtime'];
+		$this->ctime				= isset($data['ctime']) ? (int) $data['ctime'] : time();
+		$this->mtime				= isset($data['ctime']) ? (int) $data['mtime'] : time();
 		$this->user					= voter::get($data['user_id']);
 	}
 
