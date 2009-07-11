@@ -26,7 +26,7 @@ abstract class np_record
 				$sql_ary[$col] = $this->$var;
 			}
 
-			$sql = 'UPDATE ' . self::TABLE . '
+			$sql = 'UPDATE ' . constant(get_class($this) .  '::TABLE') . '
 				SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
 				WHERE id = ' . $this->id;
 
