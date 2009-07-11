@@ -51,6 +51,8 @@ class idea extends np_record
 	{
 		if (!empty($this->_modified))
 		{
+			global $db;
+
 			$sql_ary = array();
 
 			foreach ($this->_modified as $var)
