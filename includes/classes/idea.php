@@ -36,15 +36,18 @@ class idea extends np_record
 	{
 		np_registry::get_instance()->register($this);
 
-		$this->id			= (int) $data['id'];
-		$this->title		= $data['title'];
-		$this->description	= $data['description'];
-		$this->cost			= (int) $data['cost'];
-		$this->vote_cost	= (int) $data['vote_cost'];
-		$this->votes		= vote::find_by_idea($this);
-		$this->ctime		= (int) $data['ctime'];
-		$this->mtime		= (int) $data['mtime'];
-		$this->user			= voter::get($data['user_id']);
+		$this->id					= (int) $data['id'];
+		$this->title				= $data['title'];
+		$this->description			= $data['description'];
+		$this->description_uid		= $data['description_uid'];
+		$this->description_bitfield	= $data['description_bitfield'];
+		$this->description_options	= (int) $data['description_options'];
+		$this->cost					= (int) $data['cost'];
+		$this->vote_cost			= (int) $data['vote_cost'];
+		$this->votes				= vote::find_by_idea($this);
+		$this->ctime				= (int) $data['ctime'];
+		$this->mtime				= (int) $data['mtime'];
+		$this->user					= voter::get($data['user_id']);
 	}
 
 	public function save()
