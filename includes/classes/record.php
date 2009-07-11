@@ -9,6 +9,11 @@ abstract class np_record
 	// Must be declared
 	//protected static $sql_columns = array();
 
+	protected function get_class()
+	{
+		return new ReflectionClass(get_class($this));
+	}
+
 	public function get_id()
 	{
 		return $this->id;
@@ -22,13 +27,16 @@ abstract class np_record
 		{
 			global $db;
 
-			$vars = ($insert) ? array_keys(self::$sql_columns) : array_intersect(array_keys(self::$sql_columns), array_keys($this->_modified));
+			// Blergh ~_~
+			$columns = $this->get_class()->getStaticPropertyValue('sql_columns');
+
+			$vars = ($insert) ? array_keys($columns) : array_intersect(array_keys($columns), array_keys($this->_modified));
 
 			$sql_ary = array();
 
 			foreach ($vars as $var)
 			{
-				$col = self::$sql_columns[$var];
+				$col = $columns[$var];
 
 				$sql_ary[$col] = ($col === "$var_id" && $this->$var instanceof self) ? $this->$var->id : $this->$var;
 			}
