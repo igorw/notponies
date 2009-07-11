@@ -1,7 +1,12 @@
 <!-- INCLUDE header.html -->
 
-<div class="panel bg1">
+<form id="postform" method="post" action="{S_POST_ACTION}"{S_FORM_ENCTYPE}>
+
+<div class="panel" id="postingbox">
 	<div class="inner"><span class="corners-top"><span></span></span>
+	
+	<h3>{L_POST_A}</h3>
+
 	<fieldset class="fields1">
 		<!-- IF ERROR --><p class="error">{ERROR}</p><!-- ENDIF -->
 
@@ -95,7 +100,11 @@
 			<div><label for="disable_magic_url"><input type="checkbox" name="disable_magic_url" id="disable_magic_url"{S_MAGIC_URL_CHECKED} /> {L_DISABLE_MAGIC_URL}</label></div>
 		<!-- ENDIF -->
 	</fieldset>
-	</div>
+
+	<span class="corners-bottom"><span></span></span></div>
 </div>
+
+{S_FORM_TOKEN}
+</form>
 
 <!-- INCLUDE footer.html -->

@@ -25,8 +25,9 @@ $template->assign_vars(array(
 	// Traverse up one more directory as we are in ./style/
 	//'S_EDITOR'	=> $phpbb_root_path . '../styles/prosilver/template/posting_editor.html',
 
-	'S_SMILIES_ALLOWED'	=> true,
-	'S_BBCODE_ALLOWED'	=> true,
+	'S_SMILIES_ALLOWED'		=> $smilies_status,
+	'S_BBCODE_ALLOWED'		=> $bbcode_status,
+	'S_LINKS_ALLOWED'		=> $url_status,
 
 	'BBCODE_STATUS'			=> sprintf($user->lang['BBCODE_IS_' . (($bbcode_status) ? 'ON' : 'OFF')], '<a href="' . append_sid("{$phpbb_root_path}faq.$phpEx", 'mode=bbcode') . '">', '</a>'),
 	'IMG_STATUS'			=> $user->lang['IMAGES_ARE_' . (($img_status) ? 'ON' : 'OFF')],
@@ -34,6 +35,7 @@ $template->assign_vars(array(
 	'SMILIES_STATUS'		=> $user->lang['SMILIES_ARE_' . (($smilies_status) ? 'ON' : 'OFF')],
 	'URL_STATUS'			=> $user->lang['URL_IS_' . (($url_status) ? 'ON' : 'OFF')],
 
+	'S_POST_ACTION'			=> append_sid(NP_ROOT_PATH . '/post.' . $phpEx),
 ));
 
 generate_smilies('inline', false);
