@@ -47,6 +47,28 @@ class idea extends np_record
 		$this->user			= voter::get($data['user_id']);
 	}
 
+	public function __destruct()
+	{
+		if (!empty($this->_modified))
+		{
+			$sql_ary = array();
+
+			foreach ($this->_modified as $var)
+			{
+				$col = $var;
+
+				$sql_ary[$col] = $this->$var;
+			}
+
+			$sql = 'UPDATE ' . self::TABLE . '
+				SET ' . $db->sql_build_array('UPDATE', $sql_ary);
+var_dump($sql);
+//			$db->sql_query($sql);
+
+			$this->_modified = array();
+		}
+	}
+
 	public function __get($var)
 	{
 		return isset($this->$var) ? $this->$var : null;
@@ -67,6 +89,8 @@ class idea extends np_record
 				$this->description_uid		= $uid;
 				$this->description_bitfield	= $bitfield;
 				$this->description_options	= $options;
+
+				$this->_modified = array_merge($this->_modified, array('description', 'description_uid', 'description_bitfeild', 'description_options'));
 			break;
 		}
 	}
