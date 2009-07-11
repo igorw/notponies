@@ -35,12 +35,6 @@ $url_status		= $bbcode_status && $config['allow_post_links'];
 $flash_status	= $bbcode_status && $config['allow_post_flash'];
 $quote_status	= true;
 
-if (isset($_POST['preview']))
-{
-	// Previewing
-	var_dump($_POST); // Cheating for now ;)
-}
-
 if ($edit)
 {
 	$idea = idea::get($id);
@@ -61,10 +55,7 @@ if ($submit || $preview)
 {
 	$title			= utf8_normalize_nfc(request_var('title', (string) $title, true));
 	$description	= utf8_normalize_nfc(request_var('description', (string) $description, true));
-}
 
-if ($submit)
-{
 	// No bbcode/smiley/margic disable options
 	if (!$edit)
 	{
@@ -74,9 +65,17 @@ if ($submit)
 	{
 		$idea->title = $title;
 		$idea->set_description($description);
-		$idea->save();
 	}
-	trigger_error('w00000t!');
+
+	if ($submit)
+	{
+		$idea->save();
+		trigger_error('w00000t!');
+	}
+	else
+	{
+		$template->assign_var('PREVIEW', $idea->description_html);
+	}
 }
 
 $template->assign_vars(array(
