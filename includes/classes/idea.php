@@ -36,7 +36,7 @@ class idea extends np_record
 	{
 		np_registry::get_instance()->register($this);
 
-		$this->id					= (int) $data['id'];
+		$this->id					= isset($data['id']) ? (int) $data['id'] : 0;
 		$this->title				= $data['title'];
 		$this->description			= $data['description'];
 		$this->description_uid		= $data['description_uid'];
@@ -78,6 +78,11 @@ class idea extends np_record
 			case 'description':
 				$this->set_description($value);
 			break;
+
+			case 'title':
+				$this->_modified[$var] = $this->$var;
+				$this->$var = $value;
+			break;
 		}
 	}
 
@@ -118,14 +123,20 @@ class idea extends np_record
 			}
 		}
 
+		// Merge the current array over the top to preserve the originally modified value
+		$this->_modified = array_merge(array(
+			'description'			=> $this->description,
+			'description_uid'		=> $this->description_uid,
+			'description_bitfield'	=> $this->description_bitfield,
+			'description_options'	=> $this->description_options
+		), $this->_modified);
+
 		$result = self::parse_description($value, $allow_bbcode, $allow_urls, $allow_smilies);
 
 		$this->description			= $result['description'];
 		$this->description_uid		= $result['description_uid'];
 		$this->description_bitfield	= $result['description_bitfield'];
 		$this->description_options	= $result['description_options'];
-
-		$this->_modified = array_merge($this->_modified, array('description', 'description_uid', 'description_bitfield', 'description_options'));
 	}
 
 	public static function get($id)
@@ -184,25 +195,15 @@ class idea extends np_record
 
 	public static function create($title, $description, voter $voter)
 	{
-		global $db;
-
-		$sql_ary = array_merge(array(
+		$data = array_merge(array(
 			'title'				=> (string) $title,
 			'cost'				=> (int) self::DEFAULT_COST,
 			'vote_cost'			=> (int) vote::DEFAULT_COST,
 			'user_id'			=> (int) $voter->id,
 			'topic_id'			=> 0, // @todo
 		), self::parse_description($description));
-		$sql = 'INSERT INTO ' . self::TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 
-		$db->sql_query($sql);
-
-		// Prepend the id
-		$sql_ary = array_merge(array(
-			'id'	=> $db->sql_nextid(),
-		), $sql_ary);
-
-		return new self($sql_ary);
+		return new self($data);
 	}
 
 	public function voted(voter $voter)
