@@ -35,6 +35,9 @@ $user->theme['template_storedb'] = false;
 
 spl_autoload_register(ideas::AUTOLOADER);
 
+// Ensure the user viewing the page is recorded in the DB
+voter::get_current();
+
 function np_unregister()
 {
 	spl_autoload_unregister(ideas::AUTOLOADER);

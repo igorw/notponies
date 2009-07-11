@@ -16,9 +16,6 @@ $template->assign_vars(array(
 	'U_POST_IDEA'	=> append_sid('post.' . $phpEx),
 ));
 
-// Ensure the user viewing the page is recorded in the DB
-voter::get_current();
-
 foreach (idea::find(idea::POPULAR, 25) as $idea)
 {
 	$template->assign_block_vars('ideas', array_merge(array(
