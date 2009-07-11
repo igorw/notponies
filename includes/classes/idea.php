@@ -47,7 +47,7 @@ class idea extends np_record
 		$this->user			= voter::get($data['user_id']);
 	}
 
-	public function __destruct()
+	public function save()
 	{
 		if (!empty($this->_modified))
 		{
