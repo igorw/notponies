@@ -50,36 +50,12 @@ class idea extends np_record
 		$this->user					= voter::get($data['user_id']);
 	}
 
-	public function save()
-	{
-		if (!empty($this->_modified))
-		{
-			global $db;
-
-			$sql_ary = array();
-
-			foreach ($this->_modified as $var)
-			{
-				$col = $var;
-
-				$sql_ary[$col] = $this->$var;
-			}
-
-			$sql = 'UPDATE ' . self::TABLE . '
-				SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
-				WHERE id = ' . $this->id;
-
-			$db->sql_query($sql);
-
-			$this->_modified = array();
-		}
-	}
-
 	public function __get($var)
 	{
 		switch ($var)
 		{
 			case 'description_html':
+				// @todo cache this
 				return generate_text_for_display($this->description, $this->description_uid, $this->description_bitfield, $this->description_options);
 			break;
 		}
