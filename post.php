@@ -62,7 +62,7 @@ if ($submit)
 	// No bbcode/smiley/margic disable options
 	if (!$edit)
 	{
-		$idea = idea::create($title, $description, voter::get_current_user());
+		$idea = idea::create($title, $description, voter::get_current());
 	}
 	else
 	{
