@@ -57,6 +57,22 @@ else
 	$description	= '';
 }
 
+if ($submit)
+{
+	// No bbcode/smiley/margic disable options
+	if (!$edit)
+	{
+		$idea = idea::create($title, $description, voter::get_current_user());
+	}
+	else
+	{
+		$idea->title = $title;
+		$idea->set_description($description);
+		$idea->save();
+	}
+	trigger_error('w00000t!');
+}
+
 $template->assign_vars(array(
 	// Traverse up one more directory as we are in ./style/
 	//'S_EDITOR'	=> $phpbb_root_path . '../styles/prosilver/template/posting_editor.html',
