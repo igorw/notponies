@@ -5,12 +5,6 @@ if (!defined('NP_ROOT_PATH'))
 	exit;
 }
 
-if (!file_exists(NP_ROOT_PATH . '/config.php'))
-{
-	echo 'Missing config.php.';
-	exit;
-}
-
 // Bootstrap phpBB
 define('IN_PHPBB', true);
 
@@ -20,7 +14,14 @@ $phpEx = (!isset($phpEx)) ? 'php' : $phpEx;
 require $phpbb_root_path . 'common.' . $phpEx;
 
 // Bootstrap !ponies
-require NP_ROOT_PATH . '/config.php';
+
+if (!file_exists(NP_ROOT_PATH . '/config.' . $phpEx))
+{
+	echo 'Missing config.' . htmlspecialchars($phpEx) . '.';
+	exit;
+}
+
+require NP_ROOT_PATH . '/config.' . $phpEx;
 require NP_ROOT_PATH . '/includes/constants.php';
 require NP_ROOT_PATH . '/includes/classes/ideas.php';
 
