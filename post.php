@@ -15,6 +15,10 @@ require $phpbb_root_path . 'includes/functions_posting.' . $phpEx;
 $template->assign_vars(array(
 	// Traverse up one more directory as we are in ./style/
 	'S_EDITOR'	=> $phpbb_root_path . '../styles/prosilver/template/posting_editor.html',
+
+	'S_SMILIES_ALLOWED'	=> true,
+	'BBCODE_STATUS'		=> true,
+	'S_BBCODE_ALLOWED'	=> true,
 ));
 
 generate_smilies('inline', false);
