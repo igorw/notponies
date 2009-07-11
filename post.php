@@ -6,7 +6,7 @@
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 */
 
-define('NP_ROOT_PATH', dirname(__FILE__));
+define('NP_ROOT_PATH', '.');
 
 // Bootstrap
 require NP_ROOT_PATH . '/includes/bootstrap.php';

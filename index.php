@@ -6,14 +6,14 @@
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 */
 
-define('NP_ROOT_PATH', dirname(__FILE__));
+define('NP_ROOT_PATH', '.');
 
 // Bootstrap
 require NP_ROOT_PATH . '/includes/bootstrap.php';
 
 // Business logic
 $template->assign_vars(array(
-	'U_POST_IDEA'	=> append_sid('post.' . $phpEx),
+	'U_POST_IDEA'	=> append_sid(NP_ROOT_PATH . '/post.' . $phpEx),
 ));
 
 foreach (idea::find(idea::POPULAR, 25) as $idea)
