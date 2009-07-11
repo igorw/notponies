@@ -2,6 +2,10 @@
 
 class idea extends np_record
 {
+	private $user;
+
+	private $topic_id;
+
 	private $title;
 
 	private $description;
@@ -20,10 +24,21 @@ class idea extends np_record
 
 	private $mtime;
 
-	/**
-	* @todo use private and getter
-	*/
-	private $user;
+	protected static $sql_columns = array(
+		'id'					=> 'id',
+		'user'					=> 'user_id',
+		'topic_id'				=> 'topic_id',
+		'title'					=> 'title',
+		'description'			=> 'description',
+		'description_uid'		=> 'description_uid',
+		'description_bitfield'	=> 'description_bitfield',
+		'description_options'	=> 'description_options',
+		'cost'					=> 'cost',
+		'vote_cost'				=> 'vote_cost',
+		'votes'					=> 'votes',
+		'ctime'					=> 'ctime',
+		'mtime'					=> 'mtime',
+	);
 
 	const DEFAULT_COST = 5;
 

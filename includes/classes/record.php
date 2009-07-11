@@ -6,6 +6,9 @@ abstract class np_record
 
 	protected $_modified = array();
 
+	// Must be declared
+	//protected static $sql_columns = array();
+
 	public function get_id()
 	{
 		return $this->id;
@@ -13,20 +16,24 @@ abstract class np_record
 
 	public function save()
 	{
-		if (!empty($this->_modified))
+		$insert = !$this->get_id();
+
+		if (!empty($this->_modified) || $insert)
 		{
 			global $db;
 
+			$vars = ($insert) ? array_keys(self::$sql_columns) : array_intersect(array_keys(self::$sql_columns), array_keys($this->_modified));
+
 			$sql_ary = array();
 
-			foreach (array_keys($this->_modified) as $var)
+			foreach ($vars as $var)
 			{
-				$col = $var;
+				$col = self::$sql_columns[$var];
 
-				$sql_ary[$col] = $this->$var;
+				$sql_ary[$col] = ($col === "$var_id" && $this->$var instanceof self) ? $this->$var->id : $this->$var;
 			}
 
-			if ($this->get_id())
+			if (!$insert)
 			{
 				$sql = 'UPDATE ' . constant(get_class($this) .  '::TABLE') . '
 					SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
