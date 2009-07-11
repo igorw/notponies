@@ -24,6 +24,8 @@ if ($edit && !isset($_REQUEST['i']))
 	trigger_error('INVALID_MODE');
 }
 
+$params = array();
+
 $id = request_var('i', 0);
 
 $bbcode_status	= (bool) $config['allow_bbcode'];
@@ -50,6 +52,9 @@ else if ($edit)
 
 	$title			= $idea->title;
 	$description	= $idea->description;
+
+	$params[] = 'mode=edit';
+	$params[] = 'i=' . $id;
 }
 else
 {
@@ -86,7 +91,7 @@ $template->assign_vars(array(
 	'SMILIES_STATUS'		=> $user->lang['SMILIES_ARE_' . (($smilies_status) ? 'ON' : 'OFF')],
 	'URL_STATUS'			=> $user->lang['URL_IS_' . (($url_status) ? 'ON' : 'OFF')],
 
-	'S_POST_ACTION'			=> append_sid(NP_ROOT_PATH . '/post.' . $phpEx, ($edit ? 'i=' . $id : '')),
+	'S_POST_ACTION'			=> append_sid(NP_ROOT_PATH . '/post.' . $phpEx, (!empty($params) ? implode('&', $params) : false)),
 	'S_SMILIES_ALLOWED'		=> $smilies_status,
 	'S_BBCODE_ALLOWED'		=> $bbcode_status,
 	'S_LINKS_ALLOWED'		=> $url_status,
