@@ -92,7 +92,7 @@ var_dump($sql);
 				$this->description_bitfield	= $bitfield;
 				$this->description_options	= $options;
 
-				$this->_modified = array_merge($this->_modified, array('description', 'description_uid', 'description_bitfeild', 'description_options'));
+				$this->_modified = array_merge($this->_modified, array('description', 'description_uid', 'description_bitfield', 'description_options'));
 			break;
 		}
 	}
