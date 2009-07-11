@@ -12,7 +12,8 @@ define('NP_ROOT_PATH', dirname(__FILE__));
 require NP_ROOT_PATH . '/includes/bootstrap.php';
 
 $template->assign_vars(array(
-	'S_EDITOR'	=> $phpbb_root_path . 'styles/prosilver/template/posting_editor.html',
+	// Traverse up one more directory as we are in ./style/
+	'S_EDITOR'	=> $phpbb_root_path . '../styles/prosilver/template/posting_editor.html',
 ));
 
 // Return control to phpBB
