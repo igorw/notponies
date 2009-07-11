@@ -6,6 +6,10 @@ class idea extends np_record
 
 	private $description;
 
+	private $description_uid;
+	private $description_bitfield;
+	private $description_options;
+
 	private $cost;
 
 	private $vote_cost = vote::DEFAULT_COST;
@@ -46,6 +50,25 @@ class idea extends np_record
 	public function __get($var)
 	{
 		return isset($this->$var) ? $this->$var : null;
+	}
+
+	public function __set($var, $value)
+	{
+		switch ($var)
+		{
+			case 'description':
+				$uid = $bitfield = '';
+				$options = 0;
+				$allow_bbcode = $allow_urls = $allow_smilies = true;
+
+				generate_text_for_storage($value, $uid, $bitfield, $options, $allow_bbcode, $allow_urls, $allow_smilies);
+
+				$this->description			= $value;
+				$this->description_uid		= $uid;
+				$this->description_bitfield	= $bitfield;
+				$this->description_options	= $options;
+			break;
+		}
 	}
 
 	public static function get($id)
