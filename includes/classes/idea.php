@@ -54,6 +54,10 @@ class idea extends np_record
 	{
 		switch ($var)
 		{
+			case 'description':
+				return decode_message($this->description, $this->description_uid);
+			break;
+
 			case 'description_html':
 				// @todo cache this
 				return generate_text_for_display($this->description, $this->description_uid, $this->description_bitfield, $this->description_options);
