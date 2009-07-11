@@ -7,7 +7,7 @@ abstract class np_record
 	protected $_modified = array();
 
 	// Must be declared
-	//protected static $sql_columns = array();
+	public static $sql_columns = array();
 
 	protected function get_class()
 	{

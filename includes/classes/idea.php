@@ -24,7 +24,7 @@ class idea extends np_record
 
 	private $mtime;
 
-	protected static $sql_columns = array(
+	public static $sql_columns = array(
 		'id'					=> 'id',
 		'user'					=> 'user_id',
 		'topic_id'				=> 'topic_id',
