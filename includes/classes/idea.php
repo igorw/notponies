@@ -191,6 +191,7 @@ class idea extends np_record
 			'cost'				=> (int) self::DEFAULT_COST,
 			'vote_cost'			=> (int) vote::DEFAULT_COST,
 			'user_id'			=> (int) $voter->id,
+			'topic_id'			=> 0, // @todo
 		), self::parse_description($description));
 		$sql = 'INSERT INTO ' . self::TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 
