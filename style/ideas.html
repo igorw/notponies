@@ -1,17 +1,15 @@
 <!-- IF .ideas -->
 	<div>
 	<!-- BEGIN ideas -->
-		<div class="idea">
+		<div class="idea" id="idea-{ideas.ID}">
 			<h3>{ideas.TITLE}</h3>
-			<p>{ideas.DESCRIPTION}</p>
-			<div style="float: left">
-				<p>{ideas.VOTES}</p>
-				<ul>
-					<li><a href="">Up</a></li>
-					<li><a href="">Down</a></li>
-				</ul>
-			</div>
-			<div style="float: right">
+			<ul class="votes" style="width: 40px;">
+				<li><a href="">Up</a></li>
+				<li>0</li>
+				<li><a href="">Down</a></li>
+			</ul>
+			<p style="float: left;">{ideas.DESCRIPTION}</p>
+			<div style="float: left;">
 				<p><strong>{ideas.USERNAME}</strong></p>
 				<p>{ideas.RANK_TITLE}</p>
 			</div>
