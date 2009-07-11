@@ -68,20 +68,56 @@ class idea extends np_record
 		switch ($var)
 		{
 			case 'description':
-				$uid = $bitfield = '';
-				$options = 0;
-				$allow_bbcode = $allow_urls = $allow_smilies = true;
-
-				generate_text_for_storage($value, $uid, $bitfield, $options, $allow_bbcode, $allow_urls, $allow_smilies);
-
-				$this->description			= $value;
-				$this->description_uid		= $uid;
-				$this->description_bitfield	= $bitfield;
-				$this->description_options	= $options;
-
-				$this->_modified = array_merge($this->_modified, array('description', 'description_uid', 'description_bitfield', 'description_options'));
+				$this->set_description($value);
 			break;
 		}
+	}
+
+	protected static function parse_description($value, $allow_bbcode = true, $allow_urls = true, $allow_smilies = true)
+	{
+		$uid = $bitfield = '';
+		$options = 0;
+
+		generate_text_for_storage($value, $uid, $bitfield, $options, $allow_bbcode, $allow_urls, $allow_smilies);
+
+		return array(
+			'description'			=> $value,
+			'description_uid'		=> $uid,
+			'description_bitfield'	=> $bitfield,
+			'description_options'	=> (int) $options,
+		);
+	}
+
+	public function set_description($value, $allow_bbcode = null, $allow_urls = null, $allow_smilies = null)
+	{
+		if ($allow_bbcode === null || $allow_urls === null || $allow_smilies === null)
+		{
+			if ($this->description_bitfield)
+			{
+				$bitfield = new bitfield($this->description_bitfield);
+
+				$allow_bbcode	= ($allow_bbcode === null) ? $bitfield->get(OPTION_FLAG_BBCODE) : $allow_bbcode;
+				$allow_urls		= ($allow_urls === null) ? $bitfield->get(OPTION_FLAG_LINKS) : $allow_urls;
+				$allow_smilies	= ($allow_smilies === null) ? $bitfield->get(OPTION_FLAG_SMILIES) : $allow_smilies;
+
+				unset($bitfield);
+			}
+			else
+			{
+				$allow_bbcode	= ($allow_bbcode === null) ? true : $allow_bbcode;
+				$allow_urls		= ($allow_urls === null) ? true : $allow_urls;
+				$allow_smilies	= ($allow_smilies === null) ? true : $allow_smilies;
+			}
+		}
+
+		$result = self::parse_description($value, $allow_bbcode, $allow_urls, $allow_smilies);
+
+		$this->description			= $result['description'];
+		$this->description_uid		= $result['description_uid'];
+		$this->description_bitfield	= $result['description_bitfield'];
+		$this->description_options	= $result['description_options'];
+
+		$this->_modified = array_merge($this->_modified, array('description', 'description_uid', 'description_bitfield', 'description_options'));
 	}
 
 	public static function get($id)
@@ -142,13 +178,12 @@ class idea extends np_record
 	{
 		global $db;
 
-		$sql_ary = array(
+		$sql_ary = array_merge(array(
 			'title'				=> (string) $title,
-			'description'		=> (string) $description,
 			'cost'				=> (int) self::DEFAULT_COST,
 			'vote_cost'			=> (int) vote::DEFAULT_COST,
 			'user_id'			=> (int) $voter->id,
-		);
+		), self::parse_description($description));
 		$sql = 'INSERT INTO ' . self::TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 
 		$db->sql_query($sql);
