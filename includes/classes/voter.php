@@ -80,9 +80,15 @@ class voter extends np_record
 
 	public static function get_current()
 	{
-		global $user;
+		static $current;
 
-		return self::get((int) $user->data['user_id']);
+		if (!isset($current))
+		{
+			global $user;
+
+			$current = self::get((int) $user->data['user_id']);
+		}
+		return $current;
 	}
 
 	public static function get($id)
