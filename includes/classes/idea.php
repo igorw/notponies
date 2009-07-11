@@ -2,27 +2,27 @@
 
 class idea extends np_record
 {
-	private $user;
+	protected $user;
 
-	private $topic_id;
+	protected $topic_id;
 
-	private $title;
+	protected $title;
 
-	private $description;
+	protected $description;
 
-	private $description_uid;
-	private $description_bitfield;
-	private $description_options;
+	protected $description_uid;
+	protected $description_bitfield;
+	protected $description_options;
 
-	private $cost;
+	protected $cost;
 
-	private $vote_cost = vote::DEFAULT_COST;
+	protected $vote_cost = vote::DEFAULT_COST;
 
-	private $votes;
+	protected $votes;
 
-	private $ctime;
+	protected $ctime;
 
-	private $mtime;
+	protected $mtime;
 
 	public static $sql_columns = array(
 		'id'					=> 'id',
