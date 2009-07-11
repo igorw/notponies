@@ -27,7 +27,7 @@ foreach (idea::find(idea::POPULAR, 25) as $idea)
 	$template->assign_block_vars('ideas', array(
 		'ID'			=> $idea->id,
 		'TITLE'			=> $idea->title,
-		'DESCRIPTION'	=> $idea->description,
+		'DESCRIPTION'	=> $idea->description_html,
 		'USERNAME'		=> $idea->user->username('full'),
 	));
 }

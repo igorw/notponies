@@ -74,6 +74,13 @@ class idea extends np_record
 
 	public function __get($var)
 	{
+		switch ($var)
+		{
+			case 'description_html':
+				return generate_text_for_display($this->description, $this->description_uid, $this->description_bitfield, $this->description_options);
+			break;
+		}
+
 		return isset($this->$var) ? $this->$var : null;
 	}
 
