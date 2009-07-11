@@ -55,7 +55,11 @@ class idea extends np_record
 		switch ($var)
 		{
 			case 'description':
-				return decode_message($this->description, $this->description_uid);
+				$message = $this->description;
+
+				decode_message($message, $this->description_uid);
+
+				return $message;
 			break;
 
 			case 'description_html':
