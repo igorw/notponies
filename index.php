@@ -18,6 +18,9 @@ if (!file_exists(NP_ROOT_PATH . '/config.php'))
 require NP_ROOT_PATH . '/includes/bootstrap.php';
 
 // Business logic
+$template->assign_vars(array(
+	'U_POST_IDEA'	=> append_sid('submit.' . $phpEx),
+));
 
 // Ensure the user viewing the page is recorded in the DB
 voter::get_current();
