@@ -24,12 +24,12 @@ voter::get_current();
 
 foreach (idea::find(idea::POPULAR, 25) as $idea)
 {
-	$template->assign_block_vars('ideas', array(
+	$template->assign_block_vars('ideas', array_merge(array(
 		'ID'			=> $idea->id,
 		'TITLE'			=> $idea->title,
 		'DESCRIPTION'	=> $idea->description_html,
 		'USERNAME'		=> $idea->user->username('full'),
-	));
+	), array_combine(array('RANK_TITLE', 'RANK_IMG', 'RANK_IMG_SRC'), $idea->user->rank())));
 }
 
 // Return control to phpBB
