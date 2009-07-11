@@ -38,7 +38,7 @@ abstract class np_record
 			{
 				$col = $columns[$var];
 
-				$sql_ary[$col] = ($col === "$var_id" && $this->$var instanceof self) ? $this->$var->id : $this->$var;
+				$sql_ary[$col] = ($col === "{$var}_id" && $this->$var instanceof self) ? $this->$var->id : $this->$var;
 			}
 
 			if (!$insert)
