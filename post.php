@@ -17,7 +17,7 @@ $template->assign_vars(array(
 	'S_EDITOR'	=> $phpbb_root_path . '../styles/prosilver/template/posting_editor.html',
 ));
 
-generate_smilies('inline');
+generate_smilies('inline', false);
 
 // Return control to phpBB
 np_unregister();
