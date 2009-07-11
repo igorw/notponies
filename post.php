@@ -41,12 +41,7 @@ if (isset($_POST['preview']))
 	var_dump($_POST); // Cheating for now ;)
 }
 
-if ($submit || $preview)
-{
-	$title			= utf8_normalize_nfc(request_var('title', '', true));
-	$description	= utf8_normalize_nfc(request_var('description', '', true));
-}
-else if ($edit)
+if ($edit)
 {
 	$idea = idea::get($id);
 
@@ -60,6 +55,12 @@ else
 {
 	$title			= '';
 	$description	= '';
+}
+
+if ($submit || $preview)
+{
+	$title			= utf8_normalize_nfc(request_var('title', (string) $title, true));
+	$description	= utf8_normalize_nfc(request_var('description', (string) $description, true));
 }
 
 if ($submit)
