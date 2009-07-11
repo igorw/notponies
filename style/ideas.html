@@ -1,0 +1,23 @@
+<!-- IF .ideas -->
+	<div>
+	<!-- BEGIN ideas -->
+		<div class="idea">
+			<h3>{ideas.TITLE}</h3>
+			<p>{ideas.DESCRIPTION}</p>
+			<div style="float: left">
+				<p>{ideas.VOTES}</p>
+				<ul>
+					<li><a href="">Up</a></li>
+					<li><a href="">Down</a></li>
+				</ul>
+			</div>
+			<div style="float: right">
+				<p><strong>{ideas.USERNAME}</strong></p>
+				<p>{ideas.RANK_TITLE}</p>
+			</div>
+		</div>
+	<!-- END ideas -->
+	</div>
+<!-- ELSE -->
+	<p>Nothing to report.</p>
+<!-- ENDIF -->
