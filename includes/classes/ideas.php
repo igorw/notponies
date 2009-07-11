@@ -10,7 +10,7 @@ class ideas
 	{
 		if (!preg_match('#^[a-z][a-z0-9_]+$#', $class))
 		{
-			return;
+			return false;
 		}
 
 		if (strpos($class, 'np_') === 0)
@@ -18,6 +18,13 @@ class ideas
 			$class = substr($class, 3);
 		}
 
-		require NP_ROOT_PATH . '/includes/classes/' . $class . '.php';
+		$file = NP_ROOT_PATH . '/includes/classes/' . $class . '.php';
+
+		if (!file_exists($file) || !is_file($file))
+		{
+			return false;
+		}
+
+		require $file;
 	}
 }
