@@ -63,7 +63,8 @@ class idea extends np_record
 			}
 
 			$sql = 'UPDATE ' . self::TABLE . '
-				SET ' . $db->sql_build_array('UPDATE', $sql_ary);
+				SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
+				WHERE id = ' . $this->id;
 
 			$db->sql_query($sql);
 
