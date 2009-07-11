@@ -35,7 +35,6 @@ class idea extends np_record
 		'description_options'	=> 'description_options',
 		'cost'					=> 'cost',
 		'vote_cost'				=> 'vote_cost',
-		'votes'					=> 'votes',
 		'ctime'					=> 'ctime',
 		'mtime'					=> 'mtime',
 	);
@@ -52,6 +51,8 @@ class idea extends np_record
 		np_registry::get_instance()->register($this);
 
 		$this->id					= isset($data['id']) ? (int) $data['id'] : 0;
+		$this->user					= voter::get($data['user_id']);
+		$this->topic_id				= $data['topic_id'];
 		$this->title				= $data['title'];
 		$this->description			= $data['description'];
 		$this->description_uid		= $data['description_uid'];
@@ -62,7 +63,6 @@ class idea extends np_record
 		$this->votes				= vote::find_by_idea($this);
 		$this->ctime				= isset($data['ctime']) ? (int) $data['ctime'] : time();
 		$this->mtime				= isset($data['ctime']) ? (int) $data['mtime'] : time();
-		$this->user					= voter::get($data['user_id']);
 	}
 
 	public function __get($var)
