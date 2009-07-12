@@ -101,12 +101,12 @@ class idea extends np_record
 		}
 	}
 
-	protected static function parse_description($value, $allow_bbcode = true, $allow_urls = true, $allow_smilies = true)
+	protected static function parse_description($value, $allow_bbcode = true, $allow_magic_urls = true, $allow_smilies = true)
 	{
 		$uid = $bitfield = '';
 		$options = 0;
 
-		generate_text_for_storage($value, $uid, $bitfield, $options, $allow_bbcode, $allow_urls, $allow_smilies);
+		generate_text_for_storage($value, $uid, $bitfield, $options, $allow_bbcode, $allow_magic_urls, $allow_smilies);
 
 		return array(
 			'description'			=> $value,
@@ -116,13 +116,13 @@ class idea extends np_record
 		);
 	}
 
-	public function set_description($value, $allow_bbcode = null, $allow_urls = null, $allow_smilies = null)
+	public function set_description($value, $allow_bbcode = null, $allow_magic_urls = null, $allow_smilies = null)
 	{
-		if ($allow_bbcode === null || $allow_urls === null || $allow_smilies === null)
+		if ($allow_bbcode === null || $allow_magic_urls === null || $allow_smilies === null)
 		{
-			$allow_bbcode	= ($allow_bbcode === null) ? (bool) ($this->description_options & OPTION_FLAG_BBCODE) : $allow_bbcode;
-			$allow_urls		= ($allow_urls === null) ? (bool) ($this->description_options & OPTION_FLAG_LINKS) : $allow_urls;
-			$allow_smilies	= ($allow_smilies === null) ? (bool) ($this->description_options & OPTION_FLAG_SMILIES) : $allow_smilies;
+			$allow_bbcode		= ($allow_bbcode === null) ? (bool) ($this->description_options & OPTION_FLAG_BBCODE) : $allow_bbcode;
+			$allow_magic_urls	= ($allow_magic_urls === null) ? (bool) ($this->description_options & OPTION_FLAG_LINKS) : $allow_magic_urls;
+			$allow_smilies		= ($allow_smilies === null) ? (bool) ($this->description_options & OPTION_FLAG_SMILIES) : $allow_smilies;
 		}
 
 		// Merge the current array over the top to preserve the originally modified value
@@ -133,7 +133,7 @@ class idea extends np_record
 			'description_options'	=> $this->description_options
 		), $this->_modified);
 
-		$result = self::parse_description($value, $allow_bbcode, $allow_urls, $allow_smilies);
+		$result = self::parse_description($value, $allow_bbcode, $allow_magic_urls, $allow_smilies);
 
 		$this->description			= $result['description'];
 		$this->description_uid		= $result['description_uid'];
