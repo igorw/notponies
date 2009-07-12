@@ -29,7 +29,7 @@ foreach (idea::find(idea::POPULAR, 25) as $idea)
 		'S_CAN_EDIT'	=> $idea->can_edit(),
 		'S_CAN_VOTE'	=> $idea->can_vote(),
 
-		'U_DELETE'		=> ($this->can_delete()) ? append_sid(NP_ROOT_PATH . '/post.' . $phpEx, "i={$idea->id}&delete") : false,
+		'U_DELETE'		=> ($idea->can_delete()) ? append_sid(NP_ROOT_PATH . '/post.' . $phpEx, "i={$idea->id}&delete") : false,
 		'U_EDIT'		=> ($idea->can_edit()) ? append_sid(NP_ROOT_PATH . '/post.' . $phpEx, "i={$idea->id}") : false,
 		'U_VOTE_UP'		=> ($idea->can_vote()) ? append_sid(NP_ROOT_PATH . '/vote.' . $phpEx, "i={$idea->id}&amp;up&amp;place") : false,
 		'U_VOTE_DOWN'	=> ($idea->can_vote()) ? append_sid(NP_ROOT_PATH . '/vote.' . $phpEx, "i={$idea->id}&amp;down&amp;place") : false,
