@@ -18,8 +18,8 @@ if (empty($_REQUEST))
 }
 
 $id			= request_var('i', 0);
-$negate		= request_var('up', false) ? false : (request_var('down', false) ? true : null);
-$place		= request_var('place', false);
+$negate		= isset($_REQUEST['up']) ? false : (isset($_REQUEST['down']) ? true : null);
+$place		= isset($_REQUEST['place']);
 $count		= request_var('count', 1);
 
 if (!$id || $negate === null)
