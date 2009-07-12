@@ -6,6 +6,8 @@ div.idea
 div.idea div, div.idea ul, div.idea p
 {
 	float: left;
+	margin-left: 10px;
+	margin-right: 10px;
 }
 
 div.idea ul.ideas
