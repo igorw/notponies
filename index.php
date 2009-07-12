@@ -23,6 +23,7 @@ foreach (idea::find(idea::POPULAR, 25) as $idea)
 		'TITLE'			=> $idea->title,
 		'DESCRIPTION'	=> $idea->description_html,
 		'USERNAME'		=> $idea->user->username('full'),
+		'VOTES'			=> $idea->votes,
 	), array_combine(array('RANK_TITLE', 'RANK_IMG', 'RANK_IMG_SRC'), $idea->user->rank())));
 }
 
