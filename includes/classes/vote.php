@@ -127,6 +127,12 @@ class vote extends np_record
 			trigger_error('You have already voted.');
 		}
 
+		// Fail safe condition
+		if (!$idea->can_vote($voter))
+		{
+			trigger_error('You cannot vote.');
+		}
+
 		$time = time();
 
 		$sql_ary = array(
