@@ -26,7 +26,7 @@ foreach (idea::find(idea::POPULAR, 25) as $idea)
 		'SCORE'			=> $idea->score,
 
 		'U_VOTE_UP'		=> append_sid(NP_ROOT_PATH . '/vote.' . $phpEx, "i={$idea->id}&amp;up&amp;place"),
-		'U_VOTE_UP'		=> append_sid(NP_ROOT_PATH . '/vote.' . $phpEx, "i={$idea->id}&amp;down&amp;place"),
+		'U_VOTE_DOWN'	=> append_sid(NP_ROOT_PATH . '/vote.' . $phpEx, "i={$idea->id}&amp;down&amp;place"),
 	), array_combine(array('RANK_TITLE', 'RANK_IMG', 'RANK_IMG_SRC'), $idea->user->rank())));
 }
 
