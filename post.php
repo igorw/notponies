@@ -107,7 +107,7 @@ $template->assign_vars(array(
 	'SMILIES_STATUS'		=> $user->lang['SMILIES_ARE_' . (($smilies_status) ? 'ON' : 'OFF')],
 	'URL_STATUS'			=> $user->lang['URL_IS_' . (($url_status) ? 'ON' : 'OFF')],
 
-	'S_POST_ACTION'			=> append_sid(NP_ROOT_PATH . '/post.' . $phpEx, (!empty($params) ? implode('&', $params) : false)),
+	'S_POST_ACTION'			=> append_sid(NP_ROOT_PATH . '/post.' . $phpEx, (!empty($params) ? implode('&amp;', $params) : false)),
 	'S_SMILIES_ALLOWED'		=> $smilies_status,
 	'S_BBCODE_ALLOWED'		=> $bbcode_status,
 	'S_LINKS_ALLOWED'		=> $url_status,
