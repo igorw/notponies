@@ -242,18 +242,24 @@ class idea extends np_record
 	/**
 	 * Permissions related stuff
 	 */
-	public static function can_create(voter $user)
+	public static function can_create(voter $user = null)
 	{
+		$user = ($user === null) ? voter::get_current() : $user;
+
 		return $user->is_eligible();
 	}
 
-	public function can_edit(voter $user)
+	public function can_edit(voter $user = null)
 	{
+		$user = ($user === null) ? voter::get_current() : $user;
+
 		return ($user->get_id() === $this->user->get_id()) || $user->is_moderator() || $user->is_administrator();
 	}
 
-	public function can_delete(voter $user)
+	public function can_delete(voter $user = null)
 	{
+		$user = ($user === null) ? voter::get_current() : $user;
+
 		return $user->is_moderator() || $user->is_administrator();
 	}
 
