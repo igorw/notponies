@@ -42,9 +42,9 @@ if ($edit)
 	$title			= $idea->title;
 	$description	= $idea->description;
 
-	$disable_bbcode		= (isset($_POST['disable_bbcode'])) ? request_var('disable_bbcode', false) : !($idea->description_options & OPTION_FLAG_BBCODE);
-	$disable_smilies	= (isset($_POST['disable_smilies'])) ? request_var('disable_smilies', false) : !($idea->description_options & OPTION_FLAG_SMILIES);
-	$disable_magic_url	= (isset($_POST['disable_magic_url'])) ? request_var('disable_magic_url', false) : !($idea->description_options & OPTION_FLAG_LINKS); 
+	$disable_bbcode		= !($idea->description_options & OPTION_FLAG_BBCODE);
+	$disable_smilies	= !($idea->description_options & OPTION_FLAG_SMILIES);
+	$disable_magic_url	= !($idea->description_options & OPTION_FLAG_LINKS);
 
 	$params[] = 'mode=edit';
 	$params[] = 'i=' . $id;
@@ -54,15 +54,20 @@ else
 	$title			= '';
 	$description	= '';
 
-	$disable_bbcode		= request_var('disable_bbcode', false);
-	$disable_smilies	= request_var('disable_smilies', false);
-	$disable_magic_url	= request_var('disable_magic_url', false); 
+	$disable_bbcode		= false;
+	$disable_smilies	= false;
+	$disable_magic_url	= false;
 }
 
 if ($submit || $preview)
 {
 	$title				= utf8_normalize_nfc(request_var('title', (string) $title, true));
 	$description		= utf8_normalize_nfc(request_var('description', (string) $description, true));
+
+	$disable_bbcode		= request_var('disable_bbcode', false);
+	$disable_smilies	= request_var('disable_smilies', false);
+	$disable_magic_url	= request_var('disable_magic_url', false);
+
 	$enable_bbcode		= $bbcode_status && !$disable_bbcode;
 	$enable_smilies		= $smilies_status && !$disable_smilies;
 	$enable_magic_url	= $url_status && !$disable_magic_url;
