@@ -16,13 +16,7 @@ $user->add_lang('posting');
 
 $submit = isset($_POST['post']);
 $preview = isset($_POST['preview']);
-$edit = (request_var('mode', '') === 'edit');
-
-if ($edit && !isset($_REQUEST['i']))
-{
-	// iirc thats a language key
-	trigger_error('INVALID_MODE');
-}
+$edit = isset($_REQUEST['i']);
 
 $params = array();
 
