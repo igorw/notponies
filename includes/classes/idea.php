@@ -252,6 +252,11 @@ class idea extends np_record
 		return ($user->get_id() === $this->user->get_id()) || $user->is_moderator() || $user->is_administrator();
 	}
 
+	public function can_delete(voter $user)
+	{
+		return $user->is_moderator() || $user->is_administrator();
+	}
+
 	public function can_vote(voter $user)
 	{
 		return $user->is_eligible() && ($user->get_id() !== $this->user->get_id()) && !$user->voted($user);
