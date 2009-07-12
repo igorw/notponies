@@ -120,22 +120,9 @@ class idea extends np_record
 	{
 		if ($allow_bbcode === null || $allow_urls === null || $allow_smilies === null)
 		{
-			if ($this->description_bitfield)
-			{
-				$bitfield = new bitfield($this->description_bitfield);
-
-				$allow_bbcode	= ($allow_bbcode === null) ? $bitfield->get(OPTION_FLAG_BBCODE) : $allow_bbcode;
-				$allow_urls		= ($allow_urls === null) ? $bitfield->get(OPTION_FLAG_LINKS) : $allow_urls;
-				$allow_smilies	= ($allow_smilies === null) ? $bitfield->get(OPTION_FLAG_SMILIES) : $allow_smilies;
-
-				unset($bitfield);
-			}
-			else
-			{
-				$allow_bbcode	= ($allow_bbcode === null) ? true : $allow_bbcode;
-				$allow_urls		= ($allow_urls === null) ? true : $allow_urls;
-				$allow_smilies	= ($allow_smilies === null) ? true : $allow_smilies;
-			}
+			$allow_bbcode	= ($allow_bbcode === null) ? (bool) ($this->description_options & OPTION_FLAG_BBCODE) : $allow_bbcode;
+			$allow_urls		= ($allow_urls === null) ? (bool) ($this->description_options & OPTION_FLAG_LINKS) : $allow_urls;
+			$allow_smilies	= ($allow_smilies === null) ? (bool) ($this->description_options & OPTION_FLAG_SMILIES) : $allow_smilies;
 		}
 
 		// Merge the current array over the top to preserve the originally modified value
