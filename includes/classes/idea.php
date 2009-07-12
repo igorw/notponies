@@ -206,13 +206,18 @@ class idea extends np_record
 		return $results;
 	}
 
-	public static function create($title, $description, voter $voter)
+	public static function create($title, $description, voter $user)
 	{
+		if (!self::can_create($user))
+		{
+			trigger_error('Arg');
+		}
+
 		$data = array_merge(array(
 			'title'				=> (string) $title,
 			'cost'				=> (int) self::DEFAULT_COST,
 			'vote_cost'			=> (int) vote::DEFAULT_COST,
-			'user_id'			=> (int) $voter->id,
+			'user_id'			=> (int) $user->id,
 			'topic_id'			=> 0, // @todo
 		), self::parse_description($description));
 
@@ -232,5 +237,23 @@ class idea extends np_record
 	public function vote(voter $voter, $count, $negate = false)
 	{
 		return vote::add($this, $count, $negate, $voter);
+	}
+
+	/**
+	 * Permissions related stuff
+	 */
+	public static function can_create(voter $user)
+	{
+		return $user->is_eligible();
+	}
+
+	public function can_edit(voter $user)
+	{
+		return ($user->get_id() === $this->user->get_id()) || $user->is_moderator() || $user->is_administrator();
+	}
+
+	public function can_vote(voter $user)
+	{
+		return $user->is_eligible() && ($user->get_id() !== $this->user->get_id()) && !$user->voted($user);
 	}
 }
