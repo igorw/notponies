@@ -117,7 +117,7 @@ class vote extends np_record
 	{
 		global $db;
 
-		if ($idea->user_id == $voter->id)
+		if ($idea->user->id === $voter->id)
 		{
 			trigger_error('You are unable to vote for your own ideas.');
 		}
