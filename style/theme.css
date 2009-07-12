@@ -24,3 +24,9 @@ div.idea div
 {
 	width: 150px;
 }
+
+div.idea p.controls
+{
+	float: none;
+	clear: both;
+}
