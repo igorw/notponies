@@ -1,0 +1,24 @@
+div.idea
+{
+	clear: both;
+}
+
+div.idea div, div.idea ul, div.idea p
+{
+	float: left;
+}
+
+div.idea ul.ideas
+{
+	 width: 80px;
+}
+
+div.idea p
+{
+	width: 300px;
+}
+
+div.idea div
+{
+	width: 150px;
+}
