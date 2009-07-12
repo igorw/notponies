@@ -121,7 +121,7 @@ class vote extends np_record
 			trigger_error('You are unable to vote for your own ideas.');
 		}
 
-		if ($idea->voted($voter->id))
+		if ($idea->voted($voter))
 		{
 			trigger_error('You have already voted.');
 		}
@@ -129,8 +129,8 @@ class vote extends np_record
 		$time = time();
 
 		$sql_ary = array(
-			'idea_id'		=> (int) $this->id,
-			'user_id'		=> (int) $voter->id,
+			'idea_id'		=> (int) $idea->get_id(),
+			'user_id'		=> (int) $voter->get_id(),
 			'count'			=> (int) $count,
 			'value'			=> (int) ($negate ? vote::NO : vote::YES),
 			'ctime'			=> (int) $time,
