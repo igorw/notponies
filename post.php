@@ -42,6 +42,10 @@ if ($edit)
 	$title			= $idea->title;
 	$description	= $idea->description;
 
+	$disable_bbcode		= (isset($_POST['disable_bbcode'])) ? request_var('disable_bbcode', false) : !($idea->description_options & OPTION_FLAG_BBCODE);
+	$disable_smilies	= (isset($_POST['disable_snilies'])) ? request_var('disable_smilies', false) : !($idea->description_options & OPTION_FLAG_SMILIES);
+	$disable_magic_url	= (isset($_POST['disable_magic_url'])) ? request_var('disable_magic_url', false) : !($idea->description_options & OPTION_FLAG_LINKS); 
+
 	$params[] = 'mode=edit';
 	$params[] = 'i=' . $id;
 }
@@ -49,15 +53,19 @@ else
 {
 	$title			= '';
 	$description	= '';
+
+	$disable_bbcode		= request_var('disable_bbcode', false);
+	$disable_smilies	= request_var('disable_smilies', false);
+	$disable_magic_url	= request_var('disable_magic_url', false); 
 }
 
 if ($submit || $preview)
 {
 	$title				= utf8_normalize_nfc(request_var('title', (string) $title, true));
 	$description		= utf8_normalize_nfc(request_var('description', (string) $description, true));
-	$enable_bbcode		= $bbcode_status && !request_var('disable_bbcode', false);
-	$enable_smilies		= $smilies_status && !request_var('disable_smilies', false);
-	$enable_magic_url	= $url_status && !request_var('disable_magic_url', false);
+	$enable_bbcode		= $bbcode_status && !$disable_bbcode;
+	$enable_smilies		= $smilies_status && !$disable_smilies;
+	$enable_magic_url	= $url_status && !$disable_magic_url;
 
 	// No bbcode/smiley/margic disable options
 	if (!$edit)
@@ -98,6 +106,9 @@ $template->assign_vars(array(
 	'S_SMILIES_ALLOWED'		=> $smilies_status,
 	'S_BBCODE_ALLOWED'		=> $bbcode_status,
 	'S_LINKS_ALLOWED'		=> $url_status,
+	'S_BBCODE_CHECKED'		=> $disable_bbcode ? ' checked="checked"' : '',
+	'S_SMILIES_CHECKED'		=> $disable_smilies ? ' checked="checked"' : '',
+	'S_MAGIC_URL_CHECKED'	=> $disable_magic_url ? ' checked="checked"' : '',
 ));
 
 generate_smilies('inline', false);
