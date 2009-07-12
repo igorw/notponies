@@ -13,6 +13,17 @@
 				<p><strong>{ideas.USERNAME}</strong></p>
 				<p>{ideas.RANK_TITLE}</p>
 			</div>
+			<!-- IF S_CAN_EDIT or S_CAN_DELETE -->
+			<p class="controls">
+					<!-- IF U_EDIT -->
+					<a href="{U_EDIT}">{L_EDIT}</a>
+					<!-- IF U_DELETE --> · <!-- ENDIF -->
+				<!-- ENDIF -->
+				<!-- IF U_DELETE -->
+					<a href="{U_DELETE}">{L_DELETE}</a>
+				<!-- ENDIF -->
+			</p>
+			<!-- ENDIF -->
 		</div>
 	<!-- END ideas -->
 	</div>
