@@ -4,9 +4,9 @@
 		<div class="idea" id="idea-{ideas.ID}">
 			<h3>{ideas.TITLE}</h3>
 			<ul class="votes">
-				<li><a href="{ideas.U_VOTE_UP}">Up</a></li>
+				<!-- IF ideas.U_VOTE_UP --><li><a href="{ideas.U_VOTE_UP}">Up</a></li><!-- ENDIF -->
 				<li>{ideas.SCORE}</li>
-				<li><a href="{ideas.U_VOTE_DOWN}">Down</a></li>
+				<!-- IF ideas.U_VOTE_DOWN --><li><a href="{ideas.U_VOTE_DOWN}">Down</a></li><!-- ENDIF -->
 			</ul>
 			<p>{ideas.DESCRIPTION}</p>
 			<div>
