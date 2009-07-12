@@ -3,6 +3,8 @@
 class voter extends np_record
 {
 	private $name;
+	private $type;
+	private $permissions;
 	private $colour;
 	private $rank;
 	private $posts;
@@ -26,6 +28,8 @@ class voter extends np_record
 		np_registry::get_instance()->register($this);
 
 		$this->id			= (int) $data['id'];
+		$this->type			= (int) $data['user_type'];
+		$this->permissions	= $data['user_permissions'];
 		$this->name			= $data['username'];
 		$this->colour		= $data['user_colour'];
 		$this->rank			= (int) $data['user_rank'];
@@ -78,6 +82,44 @@ class voter extends np_record
 		return get_user_avatar($this->avatar['file'], $this->avatar['type'], $this->avatar['width'], $this->avatar['height'], $alt, $ignore_config);
 	}
 
+	public function get_auth()
+	{
+		if ($this->id === self::get_current()->id)
+		{
+			// Use the current auth object for the session user
+			global $auth;
+		}
+		else
+		{
+			$data = array(
+				'user_id'			=> $this->id,
+				'user_type'			=> $this->type,
+				'user_permissions'	=> &$this->permissions,
+			);
+
+			$auth = new auth($data);
+		}
+		return $auth;
+	}
+
+	/**
+	 * Is the user eligible to vote
+	 */
+	public function is_eligible()
+	{
+		return $this->type === USER_NORMAL || $this->type === USER_FOUNDER;
+	}
+
+	public function is_administrator()
+	{
+		return $this->get_auth()->acl_get('a_');
+	}
+
+	public function is_moderator()
+	{
+		return $this->get_auth()->acl_getf_global('m_');
+	}
+
 	public static function get_current()
 	{
 		static $current;
@@ -95,12 +137,13 @@ class voter extends np_record
 	{
 		global $db;
 
-		$sql = 'SELECT v.*, u.user_id, u.username, u.user_colour, u.user_rank, u.user_posts,
+		$sql = 'SELECT v.*, u.user_id, u.username, u.user_type, u.user_permissions,
+				u.user_colour, u.user_rank, u.user_posts,
 				u.user_avatar, u.user_avatar_type, u.user_avatar_width, u.user_avatar_height
 			FROM ' . USERS_TABLE . ' u
 			LEFT JOIN ' . self::TABLE . ' v ON (v.id = u.user_id)
-			WHERE u.user_id = ' . (int) $id . '
-				AND u.user_type IN (' . USER_NORMAL . ', ' . USER_FOUNDER . ')';
+			WHERE u.user_id = ' . (int) $id;/* . '
+				AND u.user_type IN (' . USER_NORMAL . ', ' . USER_FOUNDER . ')';*/
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
