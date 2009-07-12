@@ -40,16 +40,17 @@ class vote extends np_record
 
 	public function __get($var)
 	{
-		if (isset($this->$var))
+		switch ($var)
 		{
-			return $this->$var;
-		}
-		else if ($var == 'idea')
-		{
-			return idea::get($this->idea_id);
-		}
+			case 'idea':
+				return idea::get($this->idea_id);
 
-		return null;
+			case 'score':
+				return $this->value * $this->count;
+
+			default:
+				return (isset($this->$var)) ? $this->$var : null;
+		}
 	}
 
 	public function changeable()
