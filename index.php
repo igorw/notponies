@@ -15,7 +15,7 @@ require NP_ROOT_PATH . '/includes/bootstrap.php';
 $template->assign_vars(array(
 	'S_CAN_CREATE'	=> idea::can_create(),
 
-	'U_CREATE'		=> (ideas::can_create()) ? append_sid(NP_ROOT_PATH . '/post.' . $phpEx) : false,
+	'U_CREATE'		=> (idea::can_create()) ? append_sid(NP_ROOT_PATH . '/post.' . $phpEx) : false,
 
 	'U_POST_IDEA'	=> append_sid(NP_ROOT_PATH . '/post.' . $phpEx),
 ));
