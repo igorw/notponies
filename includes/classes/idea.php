@@ -263,8 +263,10 @@ class idea extends np_record
 		return $user->is_moderator() || $user->is_administrator();
 	}
 
-	public function can_vote(voter $user)
+	public function can_vote(voter $user = null)
 	{
+		$user = ($user === null) ? voter::get_current() : $user;
+
 		return $user->is_eligible() && ($user->get_id() !== $this->user->get_id()) && !$user->voted($user);
 	}
 }
