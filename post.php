@@ -53,8 +53,11 @@ else
 
 if ($submit || $preview)
 {
-	$title			= utf8_normalize_nfc(request_var('title', (string) $title, true));
-	$description	= utf8_normalize_nfc(request_var('description', (string) $description, true));
+	$title				= utf8_normalize_nfc(request_var('title', (string) $title, true));
+	$description		= utf8_normalize_nfc(request_var('description', (string) $description, true));
+	$enable_bbcode		= $bbcode_status && !request_var('disable_bbcode', false);
+	$enable_smilies		= $smilies_status && !request_var('disable_smilies', false);
+	$enable_magic_url	= $url_status && !request_var('disable_magic_url', false);
 
 	// No bbcode/smiley/margic disable options
 	if (!$edit)
@@ -64,7 +67,7 @@ if ($submit || $preview)
 	else
 	{
 		$idea->title = $title;
-		$idea->set_description($description);
+		$idea->set_description($description, $enable_bbcode, $enable_magic_url, $enable_smilies);
 	}
 
 	if ($submit)
