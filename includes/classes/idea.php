@@ -81,6 +81,17 @@ class idea extends np_record
 				// @todo cache this
 				return generate_text_for_display($this->description, $this->description_uid, $this->description_bitfield, $this->description_options);
 			break;
+
+			case 'score':
+				$score = 0;
+
+				foreach ($this->votes as $vote)
+				{
+					$score += $vote->score;
+				}
+
+				return $score;
+			break;
 		}
 
 		return isset($this->$var) ? $this->$var : null;
