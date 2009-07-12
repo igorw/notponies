@@ -267,6 +267,6 @@ class idea extends np_record
 	{
 		$user = ($user === null) ? voter::get_current() : $user;
 
-		return $user->is_eligible() && ($user->get_id() !== $this->user->get_id()) && !$user->voted($user);
+		return $user->is_eligible() && ($user->get_id() !== $this->user->get_id()) && !$idea->voted($user);
 	}
 }
