@@ -23,6 +23,7 @@ if (!file_exists(NP_ROOT_PATH . '/config.' . $phpEx))
 
 require NP_ROOT_PATH . '/config.' . $phpEx;
 require NP_ROOT_PATH . '/includes/constants.php';
+require NP_ROOT_PATH . '/includes/functions.php';
 require NP_ROOT_PATH . '/includes/classes/ideas.php';
 
 $user->session_begin();
