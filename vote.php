@@ -21,6 +21,7 @@ $id			= request_var('i', 0);
 $negate		= isset($_REQUEST['up']) ? false : (isset($_REQUEST['down']) ? true : null);
 $place		= isset($_REQUEST['place']);
 $count		= request_var('count', 1);
+$voter		= voter::get_current();
 
 if (!$id || $negate === null)
 {
@@ -36,7 +37,15 @@ if (!$place)
 }
 else
 {
-	if ($idea->vote(voter::get_current(), $count, $negate))
+	if ($idea->voted($voter))
+	{
+		if ($idea->can_vote_change(($negate ? vote::DOWN : vote::UP), $voter) && $idea->get_vote($voter)->change($count, $negate))
+		{
+			trigger_error('Yeeehaw!');
+		}
+		trigger_error('You have already voted.');
+	}
+	else if ($idea->vote($voter, $count, $negate))
 	{
 		trigger_error('Yay!');
 	}

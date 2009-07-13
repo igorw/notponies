@@ -90,6 +90,9 @@ class vote extends np_record
 
 		idea::get($this->idea_id)->recalculate_score();
 
+		// @todo Adjust points
+		// voter::get($this->voter_id)->points 
+
 		return true;
 	}
 
