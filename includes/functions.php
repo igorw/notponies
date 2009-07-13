@@ -96,7 +96,7 @@ function trim_text($text, $uid, $max_length, $max_paragraphs = 0, $stops = array
 
 				if (($_pos = utf8_strpos(utf8_substr($text, $max_length), $find)) !== false)
 				{
-					if ($_pos < $pos)
+					if ($_pos < $pos || !$pos)
 					{
 						// This is a better find, it cuts the text shorter
 						$pos = $_pos;
