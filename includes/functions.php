@@ -6,7 +6,8 @@
 * slightly modified to trim at either the first found end line or space by EXreaction.
 *
 * Modified by Chris Smith to trim to a specified number of paragraphs and/or a maximum
-* number of characters, and provide configurable stopping positions .
+* number of characters, and provide configurable stopping positions. Made some performance
+* improvements as well.
 *
 * @author fberci (http://www.phpbb.com/community/memberlist.php?mode=viewprofile&u=158767)
 * @author EXreaction (http://www.phpbb.com/community/memberlist.php?mode=viewprofile&u=202401)
@@ -118,14 +119,10 @@ function trim_text($text, $uid, $max_length, $max_paragraphs = 0, $stops = array
 		$trimmed = true;
 	}
 
-	if ($trimmed)
+	// No BBCode or no trimming return
+	if (!$enable_bbcode || !$trimmed)
 	{
-		$text .= $replacement;
-	}
-
-	if (!$enable_bbcode)
-	{
-		return $text;
+		return $text . ($trimmed ? $replacement : '');
 	}
 
 	// Some tags may contain spaces inside the tags themselves.
@@ -142,13 +139,15 @@ function trim_text($text, $uid, $max_length, $max_paragraphs = 0, $stops = array
 	{
 		// Get all used tags
 		$bitfield = new bitfield($bitfield);
-		$bbcodes_set = $bitfield->get_all_set();
+
+		// isset() provides better performance
+		$bbcodes_set = array_flip($bitfield->get_all_set());
 
 		// Add custom BBCodes having a parameter and being used
 		// to the array of potential tags that can be cut apart.
 		foreach ($custom_bbcodes as $bbcode_id => $bbcode_name)
 		{
-			if (in_array($bbcode_id, $bbcodes_set))
+			if (isset($bbcodes_set[$bbcode_id]))
 			{
 				$unsafe_tags[] = $bbcode_name;
 			}
@@ -157,9 +156,10 @@ function trim_text($text, $uid, $max_length, $max_paragraphs = 0, $stops = array
 	// Do the check for all possible tags
 	else
 	{
-		$unsafe_tags += $custom_bbcodes;
+		$unsafe_tags = array_merge($unsafe_tags, $custom_bbcodes);
 	}
 
+	// @todo Fix this block
 	foreach ($unsafe_tags as $tag)
 	{
 		if (($start_pos = strrpos($text, $tag[0])) > strrpos($text, $tag[1]))
@@ -207,5 +207,6 @@ function trim_text($text, $uid, $max_length, $max_paragraphs = 0, $stops = array
 		}
 	}
 
-	return $text;
+	// Append the replacement
+	return $text . $replacement;
 }
