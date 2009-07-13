@@ -265,13 +265,17 @@ class idea extends np_record
 		return new self($data);
 	}
 
-	public function voted(voter $voter)
+	public function voted(voter $voter = null)
 	{
+		$voter = ($voter === null) ? voter::get_current() : $voter;
+
 		return isset($this->votes[$voter->id]) && $this->votes[$voter->id]->value != vote::DELETED;
 	}
 
-	public function get_vote(voter $voter)
+	public function get_vote(voter $voter = null)
 	{
+		$voter = ($voter === null) ? voter::get_current() : $voter;
+
 		return $this->voted() ? $this->votes[$voter->id] : null;
 	}
 
