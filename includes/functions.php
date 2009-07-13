@@ -11,17 +11,14 @@
 * @param string $text Text containing BBCode tags to be truncated
 * @param string $uid BBCode uid
 * @param int $max_length Text length limit
+* @param int $max_paragraphs Maximum number of paragraphs permitted
 * @param string $bitfield BBCode bitfield (optional)
 * @param bool $enable_bbcode Whether BBCode is enabled (true by default)
 * @return string
 */
-function trim_text($text, $uid, $max_length, $bitfield = '', $enable_bbcode = true)
+function trim_text($text, $uid, $max_length, $max_paragraphs = 0, $bitfield = '', $enable_bbcode = true)
 {
-	// If there is any custom BBCode that can have space in its argument, turn this on,
-	// but else I suggest turning this off as it adds one additional (cache) SQL query
-	$check_custom_bbcodes = true;
-
-	if ($enable_bbcode && $check_custom_bbcodes)
+	if ($enable_bbcode)
 	{
 		static $custom_bbcodes = array();
 
@@ -46,11 +43,18 @@ function trim_text($text, $uid, $max_length, $bitfield = '', $enable_bbcode = tr
 		}
 	}
 
+	// Paragraph trimming
+	if ($max_paragraphs && $max_paragraphs < preg_match_all('#\n\s*\n#m', $text, $matches))
+	{
+		var_dump($matches);
+	}
+
 	// First truncate the text
 	if (utf8_strlen($text) > $max_length)
 	{
 		$next_space = strpos(substr($text, $max_length), ' ');
 		$next_el = strpos(substr($text, $max_length), "\n");
+
 		if ($next_space !== false)
 		{
 			if ($next_el !== false)
