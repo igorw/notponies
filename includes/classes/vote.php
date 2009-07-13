@@ -74,9 +74,9 @@ class vote extends np_record
 		$sql_ary = array(
 			'count'			=> (int) $count,
 			'value'			=> (int) ($negate ? vote::NO : vote::YES),
-			'mtime'			=> (int) $time,
+			'mtime'			=> (int) time(),
 		);
-		$sql_ary['cost'] = self::calculate_cost($sql_ary['count'], $sql_ary['value'], $this->idea->vote_cost);
+		$sql_ary['cost'] = self::calculate_cost($sql_ary['count'], $sql_ary['value'], idea::get($this->idea_id)->vote_cost);
 
 		$sql = 'UPDATE ' . self::TABLE . '
 			SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
