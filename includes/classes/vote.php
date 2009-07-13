@@ -166,6 +166,22 @@ class vote extends np_record
 		return $count * $value * $vote_cost;
 	}
 
+	public static function get($id)
+	{
+		global $db;
+
+		$sql = 'SELECT *
+			FROM ' . self::TABLE . '
+			WHERE id = ' . (int) $id;
+
+		$result = $db->sql_query($sql);
+
+		$row = $db->sql_fetchrow($result);
+		$db->sql_freeresult($result);
+
+		return ($row) ? new self($row) : null;
+	}
+
 	public static function find_by_idea(idea $idea)
 	{
 		global $db;
