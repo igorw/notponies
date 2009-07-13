@@ -102,7 +102,7 @@ class idea extends np_record
 		if ($max_paragraphs || $max_length)
 		{
 			// Trim at full sentence if possible then space or newline
-			$description = rtrim(trim_text($this->description, $this->description_uid, (int) $max_length, (int) $max_paragraphs, array(array('. ' => true), array(' ', "\n")), (string) $replacement, $this->description_bitfield, true));
+			$description = trim_text($this->description, $this->description_uid, (int) $max_length, (int) $max_paragraphs, array(array('. ' => true), array(' ', "\n")), (string) $replacement, $this->description_bitfield, true);
 		}
 		else
 		{

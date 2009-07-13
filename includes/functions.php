@@ -114,7 +114,8 @@ function trim_text($text, $uid, $max_length, $max_paragraphs = 0, $stops = array
 			}
 		}
 
-		$text = utf8_substr($text, 0, $max_length);
+		// Trim off spaces, this will miss UTF8 spacers :(
+		$text = rtrim(utf8_substr($text, 0, $max_length));
 
 		$trimmed = true;
 	}
