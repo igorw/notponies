@@ -2,7 +2,7 @@
 
 class vote extends np_record
 {
-	private $idea_id;
+	private $idea;
 
 	private $user_id;
 
@@ -86,6 +86,8 @@ class vote extends np_record
 		$this->cost		= $sql_ary['cost'];
 		$this->mtime	= $sql_ary['mtime'];
 
+		idea::get($this->idea_id)->recalculate_score();
+
 		return true;
 	}
 
@@ -109,6 +111,8 @@ class vote extends np_record
 		$db->sql_query($sql);
 
 		$this->value	= self::DELETED;
+
+		idea::get($this->idea_id)->recalculate_score();
 
 		return true;
 	}

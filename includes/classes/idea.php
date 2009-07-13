@@ -24,6 +24,9 @@ class idea extends np_record
 
 	protected $mtime;
 
+	// Auto calculated
+	protected $score;
+
 	public static $sql_columns = array(
 		'id'					=> 'id',
 		'user'					=> 'user_id',
@@ -45,6 +48,7 @@ class idea extends np_record
 
 	const POPULAR = 1;
 	const NEWEST = 2;
+	const SCORE = 3;
 
 	public function __construct(array $data)
 	{
@@ -63,6 +67,9 @@ class idea extends np_record
 		$this->votes				= vote::find_by_idea($this);
 		$this->ctime				= isset($data['ctime']) ? (int) $data['ctime'] : time();
 		$this->mtime				= isset($data['ctime']) ? (int) $data['mtime'] : time();
+		$this->score				= (int) $data['score'];
+
+		$this->recalculate_score();
 	}
 
 	public function __get($var)
@@ -80,17 +87,6 @@ class idea extends np_record
 			case 'description_html':
 				// @todo cache this
 				return generate_text_for_display($this->description, $this->description_uid, $this->description_bitfield, $this->description_options);
-			break;
-
-			case 'score':
-				$score = 0;
-
-				foreach ($this->votes as $vote)
-				{
-					$score += $vote->score;
-				}
-
-				return $score;
 			break;
 		}
 
@@ -133,6 +129,22 @@ class idea extends np_record
 				$this->_modified[$var] = $this->$var;
 				$this->$var = $value;
 			break;
+		}
+	}
+
+	public function recalculate_score()
+	{
+		$score = 0;
+
+		foreach ($this->votes as $vote)
+		{
+			$score += $vote->score;
+		}
+
+		if ($score !== $this->score)
+		{
+			$this->_modified = array_merge(array('score' => $this->score), $this->_modified);
+			$this->score = $score;
 		}
 	}
 
@@ -196,21 +208,25 @@ class idea extends np_record
 	{
 		global $db;
 
-		$sql_where = '';
+		$sql_where = $sql_order_by = '';
 
 		switch ($criteria)
 		{
 			case self::POPULAR:
 
+			// Temporary
+			//break;
+
+			case self::SCORE:
+				$sql_order_by = 'ORDER BY score DESC';
 			break;
 
 			case self::NEWEST:
 			default:
-				
 			break;
 		}
 
-		$sql_order_by = 'ORDER BY ctime DESC';
+		$sql_order_by .= (($sql_order_by) ? ',' : 'ORDER BY') . ' ctime DESC';
 
 		$sql = 'SELECT *
 			FROM ' . self::TABLE . "
@@ -260,7 +276,15 @@ class idea extends np_record
 
 	public function vote(voter $voter, $count, $negate = false)
 	{
-		return vote::add($this, $count, $negate, $voter);
+		if ($vote = vote::add($this, $count, $negate, $voter))
+		{
+			$this->votes[] = $vote;
+
+			$this->recalculate_score();
+
+			return true;
+		}
+		return false;
 	}
 
 	/**
