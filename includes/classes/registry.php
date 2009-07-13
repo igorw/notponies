@@ -47,4 +47,12 @@ class np_registry
 	{
 		unset($this->objects[$type][$object->get_id()]);
 	}
+
+	public function shutdown()
+	{
+		foreach ($this->objects as $object)
+		{
+			$object->save();
+		}
+	}
 }

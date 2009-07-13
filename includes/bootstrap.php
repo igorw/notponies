@@ -41,5 +41,7 @@ voter::get_current();
 
 function np_unregister()
 {
+	np_registry::get_instance()->shutdown();
+
 	spl_autoload_unregister(ideas::AUTOLOADER);
 }
