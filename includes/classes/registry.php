@@ -50,9 +50,12 @@ class np_registry
 
 	public function shutdown()
 	{
-		foreach ($this->objects as $object)
+		foreach ($this->objects as $objects)
 		{
-			$object->save();
+			foreach ($objects as $object)
+			{
+				$object->save();
+			}
 		}
 	}
 }

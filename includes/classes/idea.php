@@ -52,8 +52,6 @@ class idea extends np_record
 
 	public function __construct(array $data)
 	{
-		np_registry::get_instance()->register($this);
-
 		$this->id					= isset($data['id']) ? (int) $data['id'] : 0;
 		$this->user					= voter::get($data['user_id']);
 		$this->topic_id				= $data['topic_id'];
@@ -70,6 +68,8 @@ class idea extends np_record
 		$this->score				= (int) $data['score'];
 
 		$this->recalculate_score();
+
+		np_registry::get_instance()->register($this);
 	}
 
 	public function __get($var)

@@ -25,8 +25,6 @@ class voter extends np_record
 
 	private function __construct(array $data)
 	{
-		np_registry::get_instance()->register($this);
-
 		$this->id			= (int) $data['id'];
 		$this->type			= (int) $data['user_type'];
 		$this->permissions	= $data['user_permissions'];
@@ -44,6 +42,8 @@ class voter extends np_record
 
 		// Calculate on request
 		$this->points = null;
+
+		np_registry::get_instance()->register($this);
 	}
 
 	public function username($mode)

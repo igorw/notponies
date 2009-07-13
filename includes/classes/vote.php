@@ -26,8 +26,6 @@ class vote extends np_record
 
 	public function __construct(array $data)
 	{
-		np_registry::get_instance()->register($this);
-
 		$this->id		= (int) $data['id'];
 		$this->idea_id	= (int) $data['idea_id'];
 		$this->user_id	= (int) $data['user_id'];
@@ -36,6 +34,8 @@ class vote extends np_record
 		$this->cost		= (int) $data['cost'];
 		$this->ctime	= (int) $data['ctime'];
 		$this->mtime	= (int) $data['mtime'];
+
+		np_registry::get_instance()->register($this);
 	}
 
 	public function __get($var)
