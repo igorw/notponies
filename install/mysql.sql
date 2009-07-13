@@ -7,22 +7,24 @@ CREATE TABLE phpbb_np_ideas (
 	description mediumtext NOT NULL,
 	description_bitfield varchar(255) NOT NULL default '',
 	description_uid varchar(8) NOT NULL,
-	description_options mediumint(4) NOT NULL,
+	description_options mediumint(4) UNSIGNED NOT NULL,
 	cost smallint(4) NOT NULL,
 	vote_cost smallint(4) NOT NULL,
 	vote_closed tinyint(1) DEFAULT 0 NOT NULL,
 	rejected tinyint(1) DEFAULT 0 NOT NULL,
 	ctime int(11) UNSIGNED NOT NULL,
 	mtime int(11) UNSIGNED NOT NULL,
+	score mediumint(8) NOT NULL,
 	PRIMARY KEY (id),
-	KEY user_id (user_id)
+	KEY user_id (user_id),
+	KEY score (score)
 ) CHARACTER SET `utf8` COLLATE `utf8_bin`;
 
 CREATE TABLE phpbb_np_votes (
 	id mediumint(8) UNSIGNED NOT NULL auto_increment,
 	idea_id mediumint(8) UNSIGNED NOT NULL,
 	user_id mediumint(8) UNSIGNED NOT NULL,
-	`count` smallint(4) NOT NULL,
+	`count` smallint(4) UNSIGNED NOT NULL,
 	`value` smallint(4) NOT NULL,
 	cost smallint(4) NOT NULL,
 	ctime int(11) UNSIGNED NOT NULL,

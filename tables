@@ -13,6 +13,7 @@ ideas
 	rejected				Is the idea rejected? Useful to keep ideas rejected by the moderators for people to see
 	ctime					Creation time
 	mtime					Modification time
+	score			IDX		Auto updated from votes table
 
 votes
 	id				PK
