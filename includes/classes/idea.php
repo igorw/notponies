@@ -97,6 +97,29 @@ class idea extends np_record
 		return isset($this->$var) ? $this->$var : null;
 	}
 
+	public function get_description($display = true, $max_paragraphs = false, $max_length = false, $replacement = '...')
+	{
+		if ($max_paragraphs || $max_length)
+		{
+			$description = trim_text($this->description, $this->description_uid, (int) $max_length, (int) $max_paragraphs, (string) $replacement, $this->description_bitfield, true);
+		}
+		else
+		{
+			$description = $this->description;
+		}
+
+		if ($display)
+		{
+			return generate_text_for_display($description, $this->description_uid, $this->description_bitfield, $this->description_options);
+		}
+		else
+		{
+			decode_message($description, $this->description_uid);
+
+			return $description;
+		}
+	}
+
 	public function __set($var, $value)
 	{
 		switch ($var)
