@@ -6,7 +6,7 @@
 * slightly modified to trim at either the first found end line or space by EXreaction.
 *
 * Modified by Chris Smith to trim to a specified number of paragraphs and/or a maximum
-* number of characters.
+* number of characters, and provide configurable stopping positions .
 *
 * @author fberci (http://www.phpbb.com/community/memberlist.php?mode=viewprofile&u=158767)
 * @author EXreaction (http://www.phpbb.com/community/memberlist.php?mode=viewprofile&u=202401)
@@ -15,12 +15,13 @@
 * @param string	$uid			BBCode uid
 * @param int	$max_length		Text length limit
 * @param int	$max_paragraphs	Maximum number of paragraphs permitted
+* @param array	$stops			Characters to stop max length search at
 * @param string	$replacement	Replacment suffix for the removed text
 * @param string	$bitfield		BBCode bitfield (optional)
 * @param bool	$enable_bbcode	Whether BBCode is enabled (true by default)
 * @return string Resulting trimmed text
 */
-function trim_text($text, $uid, $max_length, $max_paragraphs = 0, $replacement = '...', $bitfield = '', $enable_bbcode = true)
+function trim_text($text, $uid, $max_length, $max_paragraphs = 0, $stops = array(' ', "\n"), $replacement = '...', $bitfield = '', $enable_bbcode = true)
 {
 	if ($enable_bbcode)
 	{
@@ -73,27 +74,43 @@ function trim_text($text, $uid, $max_length, $max_paragraphs = 0, $replacement =
 	// First truncate the text
 	if ($max_length && utf8_strlen($text) > $max_length)
 	{
-		$next_space = strpos(substr($text, $max_length), ' ');
-		$next_el = strpos(substr($text, $max_length), "\n");
+		$pos = 0;
+		$length = 0;
 
-		if ($next_space !== false)
+		if (!is_array($stops[0]))
 		{
-			if ($next_el !== false)
-			{
-				$max_length = ($next_space < $next_el) ? $next_space + $max_length : $next_el + $max_length;
-			}
-			else
-			{
-				$max_length = $next_space + $max_length;
-			}
+			$stops = array($stops);
 		}
-		else if ($next_el !== false)
+
+		foreach ($stops as $stop_group)
 		{
-			$max_length = $next_el + $max_length;
-		}
-		else
-		{
-			$max_length = utf8_strlen($text);
+			if (!is_array($stop_group))
+			{
+				continue;
+			}
+
+			foreach ($stop_group as $k => $v)
+			{
+				$find = (is_string($v)) ? $v : $k;
+				$include = is_bool($v) && $v;
+
+				if (($_pos = utf8_strpos(utf8_substr($text, $max_length), $find)) !== false)
+				{
+					if ($_pos < $pos)
+					{
+						// This is a better find, it cuts the text shorter
+						$pos = $_pos;
+						$length = $include ? utf8_strlen($find) : 0;
+					}
+				}
+			}
+
+			if ($pos)
+			{
+				// Include the length of the search string if requested
+				$max_length += $pos + $length;
+				break;
+			}
 		}
 
 		$text = utf8_substr($text, 0, $max_length);
