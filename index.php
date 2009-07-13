@@ -25,7 +25,7 @@ foreach (idea::find(idea::POPULAR, 25) as $idea)
 	$template->assign_block_vars('ideas', array_merge(array(
 		'ID'			=> $idea->id,
 		'TITLE'			=> $idea->title,
-		'DESCRIPTION'	=> $idea->get_description(true, 2, 400, ' <a href="">[...]</a>'),
+		'DESCRIPTION'	=> $idea->get_description(true, 2, 400, ' <a href="">[…]</a>'),
 		'USERNAME'		=> $idea->user->username('full'),
 		'SCORE'			=> $idea->score,
 
