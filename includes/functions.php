@@ -1,22 +1,26 @@
 <?php
-
 /**
 * BBCode-safe truncating of text
 *
-* From: http://www.phpbb.com/community/viewtopic.php?f=71&t=670335
-* Slightly modified to trim at either the first found end line or space
+* Originally from {@link http://www.phpbb.com/community/viewtopic.php?f=71&t=670335}
+* slightly modified to trim at either the first found end line or space by EXreaction.
 *
-* @author fberci <http://www.phpbb.com/community/memberlist.php?mode=viewprofile&u=158767>
-* @author EXreaction <http://www.phpbb.com/community/memberlist.php?mode=viewprofile&u=202401>
-* @param string $text Text containing BBCode tags to be truncated
-* @param string $uid BBCode uid
-* @param int $max_length Text length limit
-* @param int $max_paragraphs Maximum number of paragraphs permitted
-* @param string $bitfield BBCode bitfield (optional)
-* @param bool $enable_bbcode Whether BBCode is enabled (true by default)
-* @return string
+* Modified by Chris Smith to trim to a specified number of paragraphs and/or a maximum
+* number of characters.
+*
+* @author fberci (http://www.phpbb.com/community/memberlist.php?mode=viewprofile&u=158767)
+* @author EXreaction (http://www.phpbb.com/community/memberlist.php?mode=viewprofile&u=202401)
+* @author Chris Smith <toonarmy@phpbb.com> (http://www.phpbb.com/community/memberlist.php?mode=viewprofile&u=108642)
+* @param string	$text			Text containing BBCode tags to be truncated
+* @param string	$uid			BBCode uid
+* @param int	$max_length		Text length limit
+* @param int	$max_paragraphs	Maximum number of paragraphs permitted
+* @param string	$replacement	Replacment suffix for the removed text
+* @param string	$bitfield		BBCode bitfield (optional)
+* @param bool	$enable_bbcode	Whether BBCode is enabled (true by default)
+* @return string Resulting trimmed text
 */
-function trim_text($text, $uid, $max_length, $max_paragraphs = 0, $bitfield = '', $enable_bbcode = true)
+function trim_text($text, $uid, $max_length, $max_paragraphs = 0, $replacement = '...', $bitfield = '', $enable_bbcode = true)
 {
 	if ($enable_bbcode)
 	{
@@ -43,14 +47,31 @@ function trim_text($text, $uid, $max_length, $max_paragraphs = 0, $bitfield = ''
 		}
 	}
 
+	$trimmed = false;
+
 	// Paragraph trimming
 	if ($max_paragraphs && $max_paragraphs < preg_match_all('#\n\s*\n#m', $text, $matches))
 	{
-		var_dump($matches);
+		$find = $matches[0][$max_paragraphs - 1];
+		// Grab all the matches preceeding the paragraph to trim at, finds
+		// those that match the trim marker, sum them to skip over them.
+		$skip = sizeof(array_intersect(array_slice($matches[0], 0, $max_paragraphs - 1), array($find)));
+		$pos = 0;
+
+		do
+		{
+			$pos = utf8_strpos($text, $find, $pos + 1);
+			$skip--;
+		}
+		while ($skip >= 0);
+
+		$text = utf8_substr($text, 0, $pos);
+
+		$trimmed = true;
 	}
 
 	// First truncate the text
-	if (utf8_strlen($text) > $max_length)
+	if ($max_length && utf8_strlen($text) > $max_length)
 	{
 		$next_space = strpos(substr($text, $max_length), ' ');
 		$next_el = strpos(substr($text, $max_length), "\n");
@@ -77,15 +98,15 @@ function trim_text($text, $uid, $max_length, $max_paragraphs = 0, $bitfield = ''
 
 		$text = utf8_substr($text, 0, $max_length);
 
-		// Append three dots indicating that this is not the real end of the text
-		$text .= '...';
-
-		if (!$enable_bbcode)
-		{
-			return $text;
-		}
+		$trimmed = true;
 	}
-	else
+
+	if ($trimmed)
+	{
+		$text .= $replacement;
+	}
+
+	if (!$enable_bbcode)
 	{
 		return $text;
 	}
