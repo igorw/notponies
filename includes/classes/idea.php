@@ -40,6 +40,7 @@ class idea extends np_record
 		'vote_cost'				=> 'vote_cost',
 		'ctime'					=> 'ctime',
 		'mtime'					=> 'mtime',
+		'score'					=> 'score',
 	);
 
 	const DEFAULT_COST = 5;
