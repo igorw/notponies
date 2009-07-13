@@ -42,18 +42,21 @@ abstract class np_record
 				}
 			}
 
-			if (!$insert)
+			if ($sql_ary)
 			{
-				$sql = 'UPDATE ' . constant(get_class($this) .  '::TABLE') . '
-					SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
-					WHERE id = ' . $this->get_id();
-			}
-			else
-			{
-				$sql = 'INSERT INTO ' . constant(get_class($this) .  '::TABLE') . ' ' . $db->sql_build_array('INSERT', $sql_ary);
-			}
+				if (!$insert)
+				{
+					$sql = 'UPDATE ' . constant(get_class($this) .  '::TABLE') . '
+						SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
+						WHERE id = ' . $this->get_id();
+				}
+				else
+				{
+					$sql = 'INSERT INTO ' . constant(get_class($this) .  '::TABLE') . ' ' . $db->sql_build_array('INSERT', $sql_ary);
+				}
 
-			$db->sql_query($sql);
+				$db->sql_query($sql);
+			}
 
 			$this->_modified = array();
 		}
