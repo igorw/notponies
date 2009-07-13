@@ -156,7 +156,9 @@ class vote extends np_record
 
 		$sql = 'INSERT INTO ' . self::TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 
-		return $db->sql_query($sql);
+		$db->sql_query($sql);
+
+		return self::get($db->sql_nextid());
 	}
 
 	public static function calculate_cost($count, $value, $vote_cost)

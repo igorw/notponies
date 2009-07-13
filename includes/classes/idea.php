@@ -139,6 +139,11 @@ class idea extends np_record
 
 		foreach ($this->votes as $vote)
 		{
+			if (!$vote instanceof vote)
+			{
+				// Sanity check
+				trigger_error('Unknown error occurred.', E_USER_ERROR);
+			}
 			$score += $vote->score;
 		}
 

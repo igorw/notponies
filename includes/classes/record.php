@@ -56,6 +56,9 @@ abstract class np_record
 				}
 
 				$db->sql_query($sql);
+
+				// Add the ID for an insert
+				$this->id = ($insert) ? $db->sql_nextid() : $this->id;
 			}
 
 			$this->_modified = array();
