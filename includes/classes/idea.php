@@ -318,4 +318,18 @@ class idea extends np_record
 
 		return $user->is_eligible() && ($user->get_id() !== $this->user->get_id()) && !$this->voted($user);
 	}
+
+	public function can_vote_change(voter $user = null)
+	{
+		$user = ($user === null) ? voter::get_current() : $user;
+
+		return $user->is_eligible() && ($user->get_id() !== $this->user->get_id()) && $this->voted($user) && $this->get_vote($user)->changeable();
+	}
+
+	public function can_vote_remove(voter $user = null)
+	{
+		$user = ($user === null) ? voter::get_current() : $user;
+
+		return $user->is_eligible() && ($user->get_id() !== $this->user->get_id()) && $this->voted($user) && $this->get_vote($user)->removable();
+	}
 }

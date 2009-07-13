@@ -16,6 +16,8 @@ class vote extends np_record
 
 	private $mtime;
 
+	const UP = 1;
+	const DOWN = -1;
 	const YES = 1;
 	const NO = -1;
 	const DELETED = 0;
