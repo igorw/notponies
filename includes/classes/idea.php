@@ -337,7 +337,7 @@ class idea extends np_record
 	{
 		$user = ($user === null) ? voter::get_current() : $user;
 
-		if (!$this->voted($user))
+		if (!$user->is_eligible() || $user->get_id() === $this->user->get_id() || !$this->voted($user) || !$this->get_vote($user)->changeable())
 		{
 			// You cannot change a vote if you haven't voted.
 			return false;
@@ -346,19 +346,17 @@ class idea extends np_record
 		switch ($direction)
 		{
 			case vote::UP:
-				$direction = $this->get_vote($user)->value == vote::DOWN;
+				return $this->get_vote($user)->value == vote::DOWN;
 			break;
 
 			case vote::DOWN:
-				$direction = $this->get_vote($user)->value == vote::UP;
+				return $this->get_vote($user)->value == vote::UP;
 			break;
 
 			default:
 				// Always assume
-				$direction = true;
+				return true;
 		}
-
-		return $user->is_eligible() && ($user->get_id() !== $this->user->get_id()) && $this->voted($user) && $this->get_vote($user)->changeable() && $direction;
 	}
 
 	public function can_vote_remove(voter $user = null)
