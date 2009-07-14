@@ -120,6 +120,11 @@ class voter extends np_record
 		return $this->get_auth()->acl_getf_global('m_');
 	}
 
+	public function can_afford($amount)
+	{
+		return $amount <= 0 || $amount <= $this->points;
+	}
+
 	public static function get_current()
 	{
 		static $current;
