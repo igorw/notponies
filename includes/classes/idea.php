@@ -261,13 +261,18 @@ class idea extends np_record
 
 		$data = array_merge(array(
 			'title'				=> (string) $title,
-			'cost'				=> (int) self::DEFAULT_COST,
+			'cost'				=> (int) self::creation_cost(),
 			'vote_cost'			=> (int) vote::DEFAULT_COST,
 			'user_id'			=> (int) $user->id,
 			'topic_id'			=> 0, // @todo
 		), self::parse_description($description));
 
 		return new self($data);
+	}
+
+	public static function creation_cost()
+	{
+		return self::DEFAULT_COST;
 	}
 
 	public function voted(voter $voter = null)
