@@ -181,34 +181,38 @@ class voter extends np_record
 
 	public function __get($var)
 	{
-		if (!isset($this->$var))
+		if (isset($this->$var))
 		{
-			return null;
+			return $this->$var;
 		}
 
-		if ($var == 'points' && $this->$var === null)
+		switch ($var)
 		{
-			$this->points = $this->base_points;
+			case 'points':
+				global $db;
 
-			$sql = 'SELECT SUM(vote_cost) AS cost
-				FROM ' . vote::TABLE . "
-				WHERE user_id = {$this->id}
-				GROUP BY user_id";
+				$this->points = $this->base_points;
 
-			$result = $db->sql_query($sql);
-			$this->points -= (int) $db->sql_fetchfield('cost', false, $result);
-			$db->sql_freeresult($result);
+				$sql = 'SELECT SUM(vote_cost) AS cost
+					FROM ' . vote::TABLE . "
+					WHERE user_id = {$this->id}
+					GROUP BY user_id";
 
-			$sql = 'SELECT SUM(idea_cost) AS cost
-				FROM ' . idea::TABLE . "
-				WHERE user_id = {$this->id}
-				GROUP BY user_id";
+				$result = $db->sql_query($sql);
+				$this->points -= (int) $db->sql_fetchfield('cost', false, $result);
+				$db->sql_freeresult($result);
 
-			$result = $db->sql_query($sql);
-			$this->points -= (int) $db->sql_fetchfield('cost', false, $result);
-			$db->sql_freeresult($result);
+				$sql = 'SELECT SUM(idea_cost) AS cost
+					FROM ' . idea::TABLE . "
+					WHERE user_id = {$this->id}
+					GROUP BY user_id";
+
+				$result = $db->sql_query($sql);
+				$this->points -= (int) $db->sql_fetchfield('cost', false, $result);
+				$db->sql_freeresult($result);
+			break;
 		}
 
-		return $this->$var;
+		return (isset($this->$var)) ? $this->$var : null;
 	}
 }
