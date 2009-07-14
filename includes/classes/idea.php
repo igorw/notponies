@@ -337,6 +337,12 @@ class idea extends np_record
 	{
 		$user = ($user === null) ? voter::get_current() : $user;
 
+		if (!$this->voted($user))
+		{
+			// You cannot change a vote if you haven't voted.
+			return false;
+		}
+
 		switch ($direction)
 		{
 			case vote::UP:
