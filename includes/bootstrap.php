@@ -39,6 +39,12 @@ spl_autoload_register(ideas::AUTOLOADER);
 // Ensure the user viewing the page is recorded in the DB
 voter::get_current();
 
+// Global vars
+$template->assign_vars(array(
+	'POINTS'		=> voter::get_current()->points,
+	'POINTS_COST'	=> idea::creation_cost(),
+));
+
 function np_unregister()
 {
 	np_registry::get_instance()->shutdown();
