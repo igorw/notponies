@@ -193,7 +193,7 @@ class voter extends np_record
 
 				$this->points = $this->base_points;
 
-				$sql = 'SELECT SUM(vote_cost) AS cost
+				$sql = 'SELECT SUM(cost) AS cost
 					FROM ' . vote::TABLE . "
 					WHERE user_id = {$this->id}
 					GROUP BY user_id";
@@ -202,7 +202,7 @@ class voter extends np_record
 				$this->points -= (int) $db->sql_fetchfield('cost', false, $result);
 				$db->sql_freeresult($result);
 
-				$sql = 'SELECT SUM(idea_cost) AS cost
+				$sql = 'SELECT SUM(cost) AS cost
 					FROM ' . idea::TABLE . "
 					WHERE user_id = {$this->id}
 					GROUP BY user_id";
