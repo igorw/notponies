@@ -22,9 +22,13 @@
 <div>
 <h1>phpBB Idea Factory</h1><!-- @todo better name please -->
 <p>
+<!-- IF S_ELIGIBLE -->
 	Welcome, currently you have <strong>{POINTS}</strong> point<!-- IF POINTS != 1 -->s<!-- ENDIF -->
 	which can be used to vote on ideas or propose a new idea. Proposing an idea
 	currently costs <strong>{POINTS_COST}</strong> point<!-- IF POINTS_COST != 1 -->s<!-- ENDIF -->.
+<!-- ELSE -->
+	Welcome, sorry but you are not eligible to vote, or create idea submissions.
+<!-- ENDIF -->
 </p>
 <p>
 	Proposers of ideas which are accepted by the development team will be given
