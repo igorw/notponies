@@ -60,7 +60,7 @@ class vote extends np_record
 		return true;
 	}
 
-	public function change($count, $negate)
+	public function change($count, $negate = null)
 	{
 		if (!$this->changeable())
 		{
@@ -69,14 +69,17 @@ class vote extends np_record
 
 		global $db;
 
-		$this->value = ($negate) ? self::NO : self::YES;
-
 		$sql_ary = array(
 			'count'			=> (int) $count,
-			'value'			=> (int) ($negate ? vote::NO : vote::YES),
 			'mtime'			=> (int) time(),
 		);
-		$sql_ary['cost'] = self::calculate_cost($sql_ary['count'], $sql_ary['value'], idea::get($this->idea_id)->vote_cost);
+
+		if ($negate === null)
+		{
+			$this->value = $sql_ary['value'] = $negate ? vote::NO : vote::YES;
+		}
+
+		$sql_ary['cost'] = self::calculate_cost($sql_ary['count'], $this->value, idea::get($this->idea_id)->vote_cost);
 
 		$sql = 'UPDATE ' . self::TABLE . '
 			SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
@@ -84,7 +87,6 @@ class vote extends np_record
 		$db->sql_query($sql);
 
 		$this->count	= $sql_ary['count'];
-		$this->value	= $sql_ary['value'];
 		$this->cost		= $sql_ary['cost'];
 		$this->mtime	= $sql_ary['mtime'];
 

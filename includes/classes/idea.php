@@ -343,14 +343,16 @@ class idea extends np_record
 			return false;
 		}
 
+		$vote = $this->get_vote($user);
+
 		switch ($direction)
 		{
 			case vote::UP:
-				return $this->get_vote($user)->value == vote::DOWN;
+				return ($vote->value == vote::DOWN && $vote->count > 1) || ($vote->value == vote::UP && $this->vote_cost <= $user->points);
 			break;
 
 			case vote::DOWN:
-				return $this->get_vote($user)->value == vote::UP;
+				return ($vote->value == vote::UP && $vote->count > 1) || ($vote->value == vote::DOWN && $this->vote_cost <= $user->points);
 			break;
 
 			default:

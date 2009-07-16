@@ -22,6 +22,7 @@ $negate		= isset($_REQUEST['up']) ? false : (isset($_REQUEST['down']) ? true : n
 $place		= isset($_REQUEST['place']);
 $count		= request_var('count', 1);
 $voter		= voter::get_current();
+$direction	= $negate ? vote::DOWN : vote::UP;
 
 if (!$id || $negate === null)
 {
@@ -37,9 +38,17 @@ if (!$place)
 }
 else
 {
+	if ($voter->points < ($count * $idea->vote_cost))
+	{
+		trigger_error('You cannot afford to place this vote.');
+	}
+
 	if ($idea->voted($voter))
 	{
-		if ($idea->can_vote_change(($negate ? vote::DOWN : vote::UP), $voter) && $idea->get_vote($voter)->change($count, $negate))
+		$vote = $idea->get_vote($voter);
+		$diff = ($direction == $vote->value ? 1 : -1) * $count;
+
+		if ($idea->can_vote_change($direction, $voter) && $vote->change($vote->count + $diff, $negate))
 		{
 			trigger_error('Yeeehaw!');
 		}

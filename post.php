@@ -18,7 +18,7 @@ $submit = isset($_POST['post']);
 $preview = isset($_POST['preview']);
 $edit = isset($_REQUEST['i']);
 
-$params = array();
+$error = $params = array();
 
 $id = request_var('i', 0);
 
@@ -66,6 +66,16 @@ if ($submit || $preview)
 	$enable_smilies		= $smilies_status && !$disable_smilies;
 	$enable_magic_url	= $url_status && !$disable_magic_url;
 
+	if (!$title)
+	{
+		$error[] = 'No title';
+	}
+
+	if (!$description)
+	{
+		$error[] = 'No description';
+	}
+
 	// No bbcode/smiley/margic disable options
 	if (!$edit)
 	{
@@ -77,14 +87,17 @@ if ($submit || $preview)
 		$idea->set_description($description, $enable_bbcode, $enable_magic_url, $enable_smilies);
 	}
 
-	if ($submit)
+	if ($submit && !sizeof($error))
 	{
 		$idea->save();
 		trigger_error('w00000t!');
 	}
 	else
 	{
-		$template->assign_var('PREVIEW', $idea->description_html);
+		if ($preview)
+		{
+			$template->assign_var('PREVIEW', $idea->description_html);
+		}
 		$idea->destroy();
 	}
 }
@@ -93,6 +106,7 @@ $template->assign_vars(array(
 	// Traverse up one more directory as we are in ./style/
 	//'S_EDITOR'	=> $phpbb_root_path . '../styles/prosilver/template/posting_editor.html',
 
+	'ERROR'					=> implode('<br />', $error),
 	'TITLE'					=> $title,
 	'DESCRIPTION'			=> $description,
 
