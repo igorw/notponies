@@ -41,6 +41,8 @@ voter::get_current();
 
 // Global vars
 $template->assign_vars(array(
+	'S_ELIGIBLE'	=> voter::get_current()->is_eligible(),
+
 	'POINTS'		=> voter::get_current()->points,
 	'POINTS_COST'	=> idea::creation_cost(),
 ));
