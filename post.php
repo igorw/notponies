@@ -85,6 +85,7 @@ if ($submit || $preview)
 	else
 	{
 		$template->assign_var('PREVIEW', $idea->description_html);
+		$idea->destroy();
 	}
 }
 

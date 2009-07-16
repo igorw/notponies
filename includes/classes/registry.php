@@ -45,6 +45,8 @@ class np_registry
 
 	public function remove(np_record $object)
 	{
+		$type = get_class($object);
+
 		unset($this->objects[$type][$object->get_id()]);
 	}
 

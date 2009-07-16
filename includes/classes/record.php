@@ -9,6 +9,11 @@ abstract class np_record
 	// Must be declared
 	public static $sql_columns = array();
 
+	public function destroy()
+	{
+		np_registry::get_instance()->remove($this);
+	}
+
 	protected function get_class()
 	{
 		return new ReflectionClass(get_class($this));
