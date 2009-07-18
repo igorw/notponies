@@ -17,6 +17,7 @@ $user->add_lang('posting');
 $submit = isset($_POST['post']);
 $preview = isset($_POST['preview']);
 $edit = isset($_REQUEST['i']);
+$delete = isset($_REQUEST['delete']);
 
 $error = $params = array();
 
@@ -29,7 +30,20 @@ $url_status		= $bbcode_status && $config['allow_post_links'];
 $flash_status	= $bbcode_status && $config['allow_post_flash'];
 $quote_status	= true;
 
-if ($edit)
+if ($delete && $id)
+{
+	if ($idea = idea::get($id))
+	{
+		$idea->delete();
+
+		$url = append_sid(NP_ROOT_PATH . "/index.$phpEx");
+		meta_refresh(3, $url);
+		trigger_error('deleted<br /><br /><a href="' . $url . '">Back to main page</a>');
+	}
+
+	trigger_error('idea doesnt exist');
+}
+else if ($edit && $id)
 {
 	$idea = idea::get($id);
 
@@ -90,7 +104,10 @@ if ($submit || $preview)
 	if ($submit && !sizeof($error))
 	{
 		$idea->save();
-		trigger_error('w00000t!');
+
+		$url = append_sid(NP_ROOT_PATH . "/index.$phpEx");
+		meta_refresh(3, $url);
+		trigger_error('w00000t!<br /><br /><a href="' . $url . '">Back to main page</a>');
 	}
 	else
 	{

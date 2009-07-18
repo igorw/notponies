@@ -367,4 +367,15 @@ class idea extends np_record
 
 		return $user->is_eligible() && ($user->get_id() !== $this->user->get_id()) && $this->voted($user) && $this->get_vote($user)->removable();
 	}
+
+	public function delete()
+	{
+		global $db;
+
+		// @todo use a deleted flag
+
+		$sql = 'DELETE FROM ' . self::TABLE . '
+			WHERE id = ' . (int) $this->id;
+		$db->sql_query($sql);
+	}
 }
